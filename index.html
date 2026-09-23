@@ -1,0 +1,15 @@
+OPEN_HTML
+OPEN_HEAD
+  TITLE: Trading Platform
+  SCRIPT_SRC: https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js
+CLOSE_HEAD
+OPEN_BODY style="background:#131722;color:#fff;margin:0;padding:20px;font-family:sans-serif;"
+  HEADING: Trading Chart
+  SELECT id="s" onchange="d()" style="padding:6px;background:#2a2e39;color:#fff;margin-bottom:12px;"
+    OPTION: RELIANCE.NS
+    OPTION: TCS.NS
+    OPTION: INFY.NS
+  CLOSE_SELECT
+  DIV id="c" style="width:100%;height:550px;" CLOSE_DIV
+CLOSE_BODY
+CLOSE_HTML
