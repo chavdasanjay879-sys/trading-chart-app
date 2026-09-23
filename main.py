@@ -2989,90 +2989,59 @@ async def signal(
     close = df["Close"]
 
 
-    ema20 =
-        backend_ema(
-            close,
-            20
-        )
+    ema20 = backend_ema(
+        close,
+        20
+    )
 
-    ema50 =
-        backend_ema(
-            close,
-            50
-        )
+    ema50 = backend_ema(
+        close,
+        50
+    )
 
-    rsi =
-        backend_rsi(
-            close,
-            14
-        )
+    rsi = backend_rsi(
+        close,
+        14
+    )
 
-    vwap =
-        backend_vwap(
-            df
-        )
+    vwap = backend_vwap(
+        df
+    )
 
-    atr =
-        backend_atr(
-            df,
-            14
-        )
+    atr = backend_atr(
+        df,
+        14
+    )
 
 
-    avg_volume =
-        df["Volume"].rolling(
-            20
-        ).mean()
+    avg_volume = df["Volume"].rolling(
+        20
+    ).mean()
 
 
-    price =
-        float(
-            close.iloc[-1]
-        )
+    price = float(close.iloc[-1])
 
-    e20 =
-        float(
-            ema20.iloc[-1]
-        )
+    e20 = float(ema20.iloc[-1])
 
-    e50 =
-        float(
-            ema50.iloc[-1]
-        )
+    e50 = float(ema50.iloc[-1])
 
-    r =
-        float(
-            rsi.iloc[-1]
-        )
+    r = float(rsi.iloc[-1])
 
-    v =
-        float(
-            vwap.iloc[-1]
-        )
+    v = float(vwap.iloc[-1])
 
-    current_volume =
-        float(
-            df["Volume"].iloc[-1]
-        )
+    current_volume = float(df["Volume"].iloc[-1])
 
-    average_volume =
-        float(
-            avg_volume.iloc[-1]
-        )
+    average_volume = float(avg_volume.iloc[-1])
 
 
-    atr_value =
-        float(
-            atr.iloc[-1]
-        )
+    atr_value = float(atr.iloc[-1])
 
 
     if not math.isfinite(
         atr_value
     ):
 
-        atr_value =
-            price * 0.01
+        atr_value = price * 0.01
 
 
     buy = 0
@@ -3334,9 +3303,10 @@ async def signal(
 
 if __name__ == "__main__":
 
+    import os
+
     uvicorn.run(
         app,
-        host="127.0.0.1",
-        port=8000,
-        reload=True
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8000))
     )
