@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 import yfinance as yf
+import pandas as pd
 
 app = FastAPI(title="Professional Trading Platform")
 
@@ -13,21 +14,33 @@ ALLOWED_SYMBOLS = {
 
 
 INTERVAL_SETTINGS = {
-    "1d": {
-        "period": "1mo",
-        "interval": "1d",
+    "1m": {
+        "period": "5d",
+        "interval": "1m",
     },
-    "1h": {
-        "period": "1mo",
-        "interval": "1h",
+    "5m": {
+        "period": "5d",
+        "interval": "5m",
     },
     "15m": {
         "period": "5d",
         "interval": "15m",
     },
-    "5m": {
+    "30m": {
         "period": "5d",
-        "interval": "5m",
+        "interval": "30m",
+    },
+    "1h": {
+        "period": "1mo",
+        "interval": "1h",
+    },
+    "4h": {
+        "period": "1mo",
+        "interval": "1h",
+    },
+    "1d": {
+        "period": "1y",
+        "interval": "1d",
     },
 }
 
@@ -73,21 +86,45 @@ async def get_candles(
                 detail="No market data found"
             )
 
+        # -----------------------------------------
+        # 4H CANDLE CREATION
+        # -----------------------------------------
+        if interval == "4h":
+
+            data = data.copy()
+
+            data = data.resample("4h").agg({
+                "Open": "first",
+                "High": "max",
+                "Low": "min",
+                "Close": "last",
+                "Volume": "sum"
+            })
+
+            data = data.dropna()
+
         candles = []
 
         for index, row in data.iterrows():
 
-            if (
-                row["Open"] is None
-                or row["High"] is None
-                or row["Low"] is None
-                or row["Close"] is None
-            ):
+            if pd.isna(row["Open"]):
+                continue
+
+            if pd.isna(row["High"]):
+                continue
+
+            if pd.isna(row["Low"]):
+                continue
+
+            if pd.isna(row["Close"]):
                 continue
 
             if interval == "1d":
+
                 time_value = index.strftime("%Y-%m-%d")
+
             else:
+
                 time_value = int(index.timestamp())
 
             candles.append({
@@ -96,8 +133,16 @@ async def get_candles(
                 "high": float(row["High"]),
                 "low": float(row["Low"]),
                 "close": float(row["Close"]),
-                "volume": int(row["Volume"]) if row["Volume"] else 0
+                "volume": int(row["Volume"])
+                if not pd.isna(row["Volume"])
+                else 0
             })
+
+        if not candles:
+            raise HTTPException(
+                status_code=404,
+                detail="No valid candle data found"
+            )
 
         return candles
 
@@ -105,6 +150,7 @@ async def get_candles(
         raise
 
     except Exception as exc:
+
         raise HTTPException(
             status_code=500,
             detail=f"Market data error: {str(exc)}"
@@ -112,6 +158,7 @@ async def get_candles(
 
 
 if __name__ == "__main__":
+
     import uvicorn
 
     uvicorn.run(
