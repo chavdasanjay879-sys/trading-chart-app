@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Professional Trading Platform</title>
+    <title>TradePro - Professional Trading Platform</title>
 
     <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 
@@ -35,17 +35,21 @@
             overflow-x: hidden;
         }
 
+        /* TOP BAR */
+
         .topbar {
-            height: 58px;
+            min-height: 58px;
             width: 100%;
             background: #1e222d;
             border-bottom: 1px solid #2a2e39;
 
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
 
-            padding: 0 15px;
+            padding: 8px 15px;
+
+            overflow-x: auto;
         }
 
         .logo {
@@ -53,6 +57,7 @@
             font-weight: bold;
             color: #ffffff;
             margin-right: 10px;
+            white-space: nowrap;
         }
 
         select,
@@ -64,6 +69,7 @@
             padding: 8px 11px;
             font-size: 13px;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         select:hover,
@@ -81,6 +87,8 @@
             min-width: 150px;
         }
 
+        /* MAIN LAYOUT */
+
         .layout {
             display: flex;
             width: 100%;
@@ -92,6 +100,8 @@
             min-width: 0;
             padding: 12px;
         }
+
+        /* CHART HEADER */
 
         .chart-header {
             height: 42px;
@@ -114,6 +124,8 @@
             color: #787b86;
         }
 
+        /* CHART */
+
         .chart-wrapper {
             width: 100%;
             height: 550px;
@@ -127,6 +139,8 @@
             width: 100%;
             height: 100%;
         }
+
+        /* SIDE PANEL */
 
         .side-panel {
             width: 260px;
@@ -148,7 +162,6 @@
             justify-content: space-between;
 
             padding: 11px 8px;
-
             margin-bottom: 7px;
 
             background: #131722;
@@ -164,6 +177,8 @@
             padding: 5px 9px;
             font-size: 11px;
         }
+
+        /* SIGNAL */
 
         .signal-box {
             margin-top: 20px;
@@ -204,14 +219,12 @@
             color: #787b86;
         }
 
+        /* MOBILE */
+
         @media (max-width: 900px) {
 
             .side-panel {
                 width: 220px;
-            }
-
-            .topbar {
-                overflow-x: auto;
             }
 
         }
@@ -242,16 +255,24 @@
 <body>
 
 
+    <!-- ========================= -->
+    <!-- TOP BAR -->
+    <!-- ========================= -->
+
     <div class="topbar">
 
         <div class="logo">
             TradePro
         </div>
 
+
+        <!-- SYMBOL -->
+
         <select
             id="symbolSelector"
             class="symbol-select"
         >
+
             <option value="RELIANCE.NS">
                 RELIANCE.NS
             </option>
@@ -263,22 +284,29 @@
             <option value="INFY.NS">
                 INFY.NS
             </option>
+
         </select>
+
+
+        <!-- ========================= -->
+        <!-- TIMEFRAME BUTTONS -->
+        <!-- ========================= -->
+
+        <button
+            class="timeframe"
+            data-interval="1m"
+        >
+            1m
+        </button>
 
 
         <button
             class="timeframe active"
-            data-interval="1d"
+            data-interval="5m"
         >
-            1D
+            5m
         </button>
 
-        <button
-            class="timeframe"
-            data-interval="1h"
-        >
-            1H
-        </button>
 
         <button
             class="timeframe"
@@ -287,13 +315,40 @@
             15m
         </button>
 
+
         <button
             class="timeframe"
-            data-interval="5m"
+            data-interval="30m"
         >
-            5m
+            30m
         </button>
 
+
+        <button
+            class="timeframe"
+            data-interval="1h"
+        >
+            1H
+        </button>
+
+
+        <button
+            class="timeframe"
+            data-interval="4h"
+        >
+            4H
+        </button>
+
+
+        <button
+            class="timeframe"
+            data-interval="1d"
+        >
+            1D
+        </button>
+
+
+        <!-- AUTO FIT -->
 
         <button id="fitButton">
             Auto Fit
@@ -302,8 +357,14 @@
     </div>
 
 
+    <!-- ========================= -->
+    <!-- MAIN LAYOUT -->
+    <!-- ========================= -->
+
     <div class="layout">
 
+
+        <!-- MAIN CHART -->
 
         <div class="main">
 
@@ -334,6 +395,10 @@
         </div>
 
 
+        <!-- ========================= -->
+        <!-- RIGHT PANEL -->
+        <!-- ========================= -->
+
         <div class="side-panel">
 
 
@@ -341,6 +406,8 @@
                 Indicators
             </div>
 
+
+            <!-- VOLUME -->
 
             <div class="indicator">
 
@@ -358,20 +425,22 @@
             </div>
 
 
+            <!-- EMA 20 -->
+
             <div class="indicator">
 
                 <span>
                     EMA 20
                 </span>
 
-                <button
-                    id="ema20Button"
-                >
+                <button id="ema20Button">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- EMA 50 -->
 
             <div class="indicator">
 
@@ -379,14 +448,14 @@
                     EMA 50
                 </span>
 
-                <button
-                    id="ema50Button"
-                >
+                <button id="ema50Button">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- SMA 20 -->
 
             <div class="indicator">
 
@@ -394,14 +463,14 @@
                     SMA 20
                 </span>
 
-                <button
-                    id="sma20Button"
-                >
+                <button id="sma20Button">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- SMA 50 -->
 
             <div class="indicator">
 
@@ -409,14 +478,14 @@
                     SMA 50
                 </span>
 
-                <button
-                    id="sma50Button"
-                >
+                <button id="sma50Button">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- VWAP -->
 
             <div class="indicator">
 
@@ -424,14 +493,14 @@
                     VWAP
                 </span>
 
-                <button
-                    id="vwapButton"
-                >
+                <button id="vwapButton">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- BOLLINGER -->
 
             <div class="indicator">
 
@@ -439,14 +508,14 @@
                     Bollinger Bands
                 </span>
 
-                <button
-                    id="bbButton"
-                >
+                <button id="bbButton">
                     OFF
                 </button>
 
             </div>
 
+
+            <!-- MARKET SIGNAL -->
 
             <div class="signal-box">
 
@@ -480,6 +549,11 @@
 <script>
 
 
+/* =========================================
+   ELEMENTS
+========================================= */
+
+
 const chartContainer =
     document.getElementById("chart");
 
@@ -504,23 +578,37 @@ const signalInfo =
     document.getElementById("signalInfo");
 
 
+/* =========================================
+   CREATE CHART
+========================================= */
+
+
 const chart =
     LightweightCharts.createChart(
         chartContainer,
         {
-            width: chartContainer.clientWidth,
 
-            height: chartContainer.clientHeight,
+            width:
+                chartContainer.clientWidth,
+
+            height:
+                chartContainer.clientHeight,
+
 
             layout: {
+
                 background: {
                     color: "#131722"
                 },
 
-                textColor: "#d1d4dc"
+                textColor:
+                    "#d1d4dc"
+
             },
 
+
             grid: {
+
                 vertLines: {
                     color: "#1e222d"
                 },
@@ -528,58 +616,99 @@ const chart =
                 horzLines: {
                     color: "#1e222d"
                 }
+
             },
+
 
             crosshair: {
+
                 mode:
                     LightweightCharts
-                    .CrosshairMode
-                    .Normal
+                        .CrosshairMode
+                        .Normal
+
             },
+
 
             rightPriceScale: {
-                borderColor: "#2a2e39"
+
+                borderColor:
+                    "#2a2e39"
+
             },
+
 
             timeScale: {
-                borderColor: "#2a2e39",
 
-                timeVisible: true,
+                borderColor:
+                    "#2a2e39",
 
-                secondsVisible: false
+                timeVisible:
+                    true,
+
+                secondsVisible:
+                    false
+
             },
+
 
             handleScroll: {
-                mouseWheel: true,
 
-                pressedMouseMove: true
+                mouseWheel:
+                    true,
+
+                pressedMouseMove:
+                    true
+
             },
 
+
             handleScale: {
-                axisPressedMouseMove: true,
 
-                mouseWheel: true,
+                axisPressedMouseMove:
+                    true,
 
-                pinch: true
+                mouseWheel:
+                    true,
+
+                pinch:
+                    true
+
             }
+
         }
     );
+
+
+/* =========================================
+   CANDLESTICK
+========================================= */
 
 
 const candleSeries =
     chart.addCandlestickSeries({
 
-        upColor: "#26a69a",
+        upColor:
+            "#26a69a",
 
-        downColor: "#ef5350",
+        downColor:
+            "#ef5350",
 
-        borderVisible: false,
+        borderVisible:
+            false,
 
-        wickUpColor: "#26a69a",
+        wickUpColor:
+            "#26a69a",
 
-        wickDownColor: "#ef5350"
+        wickDownColor:
+            "#ef5350"
 
     });
+
+
+/* =========================================
+   VOLUME
+========================================= */
 
 
 const volumeSeries =
@@ -592,8 +721,11 @@ const volumeSeries =
         priceScaleId: "",
 
         scaleMargins: {
+
             top: 0.80,
+
             bottom: 0
+
         }
 
     });
@@ -604,20 +736,39 @@ volumeSeries.applyOptions({
 });
 
 
+/* =========================================
+   DATA
+========================================= */
+
+
 let rawData = [];
 
 
+/* =========================================
+   INDICATOR SERIES
+========================================= */
+
+
 let ema20Series = null;
+
 let ema50Series = null;
 
 let sma20Series = null;
+
 let sma50Series = null;
 
 let vwapSeries = null;
 
 let bbUpperSeries = null;
+
 let bbMiddleSeries = null;
+
 let bbLowerSeries = null;
+
+
+/* =========================================
+   CREATE LINE
+========================================= */
 
 
 function createLineSeries() {
@@ -626,36 +777,61 @@ function createLineSeries() {
 
         lineWidth: 2,
 
-        priceLineVisible: false,
+        priceLineVisible:
+            false,
 
-        lastValueVisible: false
+        lastValueVisible:
+            false
 
     });
 
 }
 
 
-function calculateSMA(data, period) {
+/* =========================================
+   SMA
+========================================= */
+
+
+function calculateSMA(
+    data,
+    period
+) {
 
     const result = [];
 
     let sum = 0;
 
-    for (let i = 0; i < data.length; i++) {
 
-        sum += data[i].close;
+    for (
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
+
+        sum +=
+            data[i].close;
+
 
         if (i >= period) {
-            sum -= data[i - period].close;
+
+            sum -=
+                data[i - period].close;
+
         }
 
-        if (i >= period - 1) {
+
+        if (
+            i >= period - 1
+        ) {
 
             result.push({
 
-                time: data[i].time,
+                time:
+                    data[i].time,
 
-                value: sum / period
+                value:
+                    sum / period
 
             });
 
@@ -663,11 +839,21 @@ function calculateSMA(data, period) {
 
     }
 
+
     return result;
+
 }
 
 
-function calculateEMA(data, period) {
+/* =========================================
+   EMA
+========================================= */
+
+
+function calculateEMA(
+    data,
+    period
+) {
 
     const result = [];
 
@@ -676,16 +862,24 @@ function calculateEMA(data, period) {
 
     let ema = null;
 
-    for (let i = 0; i < data.length; i++) {
+
+    for (
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
 
         const close =
             data[i].close;
+
 
         if (ema === null) {
 
             ema = close;
 
-        } else {
+        }
+
+        else {
 
             ema =
                 (close - ema) *
@@ -694,13 +888,18 @@ function calculateEMA(data, period) {
 
         }
 
-        if (i >= period - 1) {
+
+        if (
+            i >= period - 1
+        ) {
 
             result.push({
 
-                time: data[i].time,
+                time:
+                    data[i].time,
 
-                value: ema
+                value:
+                    ema
 
             });
 
@@ -708,8 +907,15 @@ function calculateEMA(data, period) {
 
     }
 
+
     return result;
+
 }
+
+
+/* =========================================
+   VWAP
+========================================= */
 
 
 function calculateVWAP(data) {
@@ -720,7 +926,10 @@ function calculateVWAP(data) {
 
     let cumulativeVolume = 0;
 
-    for (const candle of data) {
+
+    for (
+        const candle of data
+    ) {
 
         const typicalPrice =
             (
@@ -729,18 +938,24 @@ function calculateVWAP(data) {
                 candle.close
             ) / 3;
 
+
         cumulativePV +=
             typicalPrice *
             candle.volume;
 
+
         cumulativeVolume +=
             candle.volume;
 
-        if (cumulativeVolume > 0) {
+
+        if (
+            cumulativeVolume > 0
+        ) {
 
             result.push({
 
-                time: candle.time,
+                time:
+                    candle.time,
 
                 value:
                     cumulativePV /
@@ -752,8 +967,15 @@ function calculateVWAP(data) {
 
     }
 
+
     return result;
+
 }
+
+
+/* =========================================
+   BOLLINGER BANDS
+========================================= */
 
 
 function calculateBollingerBands(
@@ -763,8 +985,11 @@ function calculateBollingerBands(
 ) {
 
     const upper = [];
+
     const middle = [];
+
     const lower = [];
+
 
     for (
         let i = period - 1;
@@ -779,14 +1004,18 @@ function calculateBollingerBands(
                     i + 1
                 )
                 .map(
-                    item => item.close
+                    item =>
+                        item.close
                 );
+
 
         const mean =
             values.reduce(
-                (a, b) => a + b,
+                (a, b) =>
+                    a + b,
                 0
             ) / period;
+
 
         const variance =
             values.reduce(
@@ -799,12 +1028,17 @@ function calculateBollingerBands(
                 0
             ) / period;
 
+
         const standardDeviation =
-            Math.sqrt(variance);
+            Math.sqrt(
+                variance
+            );
+
 
         upper.push({
 
-            time: data[i].time,
+            time:
+                data[i].time,
 
             value:
                 mean +
@@ -813,17 +1047,22 @@ function calculateBollingerBands(
 
         });
 
+
         middle.push({
 
-            time: data[i].time,
+            time:
+                data[i].time,
 
-            value: mean
+            value:
+                mean
 
         });
 
+
         lower.push({
 
-            time: data[i].time,
+            time:
+                data[i].time,
 
             value:
                 mean -
@@ -834,26 +1073,43 @@ function calculateBollingerBands(
 
     }
 
+
     return {
+
         upper,
+
         middle,
+
         lower
+
     };
 
 }
+
+
+/* =========================================
+   REMOVE SERIES
+========================================= */
 
 
 function removeSeries(series) {
 
     if (series) {
 
-        chart.removeSeries(series);
+        chart.removeSeries(
+            series
+        );
 
     }
 
     return null;
 
 }
+
+
+/* =========================================
+   INDICATOR BUTTON
+========================================= */
 
 
 function setIndicatorButton(
@@ -864,8 +1120,12 @@ function setIndicatorButton(
     const button =
         document.getElementById(id);
 
+
     button.textContent =
-        enabled ? "ON" : "OFF";
+        enabled
+            ? "ON"
+            : "OFF";
+
 
     button.classList.toggle(
         "active",
@@ -875,6 +1135,11 @@ function setIndicatorButton(
 }
 
 
+/* =========================================
+   EMA 20
+========================================= */
+
+
 function toggleEMA20() {
 
     if (!ema20Series) {
@@ -882,30 +1147,39 @@ function toggleEMA20() {
         ema20Series =
             createLineSeries();
 
+
         ema20Series.applyOptions({
 
-            color: "#2962ff"
+            color:
+                "#2962ff"
 
         });
 
+
         ema20Series.setData(
+
             calculateEMA(
                 rawData,
                 20
             )
+
         );
+
 
         setIndicatorButton(
             "ema20Button",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         ema20Series =
             removeSeries(
                 ema20Series
             );
+
 
         setIndicatorButton(
             "ema20Button",
@@ -915,6 +1189,11 @@ function toggleEMA20() {
     }
 
 }
+
+
+/* =========================================
+   EMA 50
+========================================= */
 
 
 function toggleEMA50() {
@@ -924,30 +1203,39 @@ function toggleEMA50() {
         ema50Series =
             createLineSeries();
 
+
         ema50Series.applyOptions({
 
-            color: "#ff9800"
+            color:
+                "#ff9800"
 
         });
 
+
         ema50Series.setData(
+
             calculateEMA(
                 rawData,
                 50
             )
+
         );
+
 
         setIndicatorButton(
             "ema50Button",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         ema50Series =
             removeSeries(
                 ema50Series
             );
+
 
         setIndicatorButton(
             "ema50Button",
@@ -957,6 +1245,11 @@ function toggleEMA50() {
     }
 
 }
+
+
+/* =========================================
+   SMA 20
+========================================= */
 
 
 function toggleSMA20() {
@@ -966,30 +1259,39 @@ function toggleSMA20() {
         sma20Series =
             createLineSeries();
 
+
         sma20Series.applyOptions({
 
-            color: "#9c27b0"
+            color:
+                "#9c27b0"
 
         });
 
+
         sma20Series.setData(
+
             calculateSMA(
                 rawData,
                 20
             )
+
         );
+
 
         setIndicatorButton(
             "sma20Button",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         sma20Series =
             removeSeries(
                 sma20Series
             );
+
 
         setIndicatorButton(
             "sma20Button",
@@ -999,6 +1301,11 @@ function toggleSMA20() {
     }
 
 }
+
+
+/* =========================================
+   SMA 50
+========================================= */
 
 
 function toggleSMA50() {
@@ -1008,30 +1315,39 @@ function toggleSMA50() {
         sma50Series =
             createLineSeries();
 
+
         sma50Series.applyOptions({
 
-            color: "#00bcd4"
+            color:
+                "#00bcd4"
 
         });
 
+
         sma50Series.setData(
+
             calculateSMA(
                 rawData,
                 50
             )
+
         );
+
 
         setIndicatorButton(
             "sma50Button",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         sma50Series =
             removeSeries(
                 sma50Series
             );
+
 
         setIndicatorButton(
             "sma50Button",
@@ -1041,6 +1357,11 @@ function toggleSMA50() {
     }
 
 }
+
+
+/* =========================================
+   VWAP
+========================================= */
 
 
 function toggleVWAP() {
@@ -1050,29 +1371,38 @@ function toggleVWAP() {
         vwapSeries =
             createLineSeries();
 
+
         vwapSeries.applyOptions({
 
-            color: "#e91e63"
+            color:
+                "#e91e63"
 
         });
 
+
         vwapSeries.setData(
+
             calculateVWAP(
                 rawData
             )
+
         );
+
 
         setIndicatorButton(
             "vwapButton",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         vwapSeries =
             removeSeries(
                 vwapSeries
             );
+
 
         setIndicatorButton(
             "vwapButton",
@@ -1082,6 +1412,11 @@ function toggleVWAP() {
     }
 
 }
+
+
+/* =========================================
+   BOLLINGER BANDS
+========================================= */
 
 
 function toggleBollingerBands() {
@@ -1093,60 +1428,84 @@ function toggleBollingerBands() {
                 rawData
             );
 
+
         bbUpperSeries =
             createLineSeries();
+
 
         bbMiddleSeries =
             createLineSeries();
 
+
         bbLowerSeries =
             createLineSeries();
 
+
         bbUpperSeries.applyOptions({
-            color: "#f44336"
+
+            color:
+                "#f44336"
+
         });
+
 
         bbMiddleSeries.applyOptions({
-            color: "#ffffff"
+
+            color:
+                "#ffffff"
+
         });
 
+
         bbLowerSeries.applyOptions({
-            color: "#f44336"
+
+            color:
+                "#f44336"
+
         });
+
 
         bbUpperSeries.setData(
             bands.upper
         );
 
+
         bbMiddleSeries.setData(
             bands.middle
         );
 
+
         bbLowerSeries.setData(
             bands.lower
         );
+
 
         setIndicatorButton(
             "bbButton",
             true
         );
 
-    } else {
+    }
+
+    else {
 
         bbUpperSeries =
             removeSeries(
                 bbUpperSeries
             );
 
+
         bbMiddleSeries =
             removeSeries(
                 bbMiddleSeries
             );
 
+
         bbLowerSeries =
             removeSeries(
                 bbLowerSeries
             );
+
 
         setIndicatorButton(
             "bbButton",
@@ -1158,22 +1517,33 @@ function toggleBollingerBands() {
 }
 
 
+/* =========================================
+   MARKET SIGNAL
+========================================= */
+
+
 function generateSignal() {
 
-    if (rawData.length < 50) {
+    if (
+        rawData.length < 50
+    ) {
 
         signalElement.textContent =
             "NEUTRAL";
 
+
         signalElement.className =
             "signal neutral";
+
 
         signalInfo.textContent =
             "Not enough data for signal calculation.";
 
+
         return;
 
     }
+
 
     const ema20 =
         calculateEMA(
@@ -1181,28 +1551,34 @@ function generateSignal() {
             20
         );
 
+
     const ema50 =
         calculateEMA(
             rawData,
             50
         );
 
+
     const latest =
         rawData[
             rawData.length - 1
         ];
+
 
     const latestEMA20 =
         ema20[
             ema20.length - 1
         ].value;
 
+
     const latestEMA50 =
         ema50[
             ema50.length - 1
         ].value;
 
+
     let score = 0;
+
 
     if (
         latest.close >
@@ -1213,6 +1589,7 @@ function generateSignal() {
 
     }
 
+
     if (
         latestEMA20 >
         latestEMA50
@@ -1221,6 +1598,7 @@ function generateSignal() {
         score++;
 
     }
+
 
     if (
         latest.close >
@@ -1231,39 +1609,50 @@ function generateSignal() {
 
     }
 
+
     if (score >= 3) {
 
         signalElement.textContent =
             "BUY";
 
+
         signalElement.className =
             "signal buy";
+
 
         signalInfo.innerHTML =
             "EMA20 above EMA50<br>" +
             "Price above EMA20<br>" +
             "Positive latest candle";
 
-    } else if (score === 0) {
+    }
+
+    else if (score === 0) {
 
         signalElement.textContent =
             "SELL";
 
+
         signalElement.className =
             "signal sell";
+
 
         signalInfo.innerHTML =
             "EMA20 below EMA50<br>" +
             "Price below EMA20<br>" +
             "Negative latest candle";
 
-    } else {
+    }
+
+    else {
 
         signalElement.textContent =
             "NEUTRAL";
 
+
         signalElement.className =
             "signal neutral";
+
 
         signalInfo.innerHTML =
             "Mixed indicator conditions<br>" +
@@ -1274,6 +1663,11 @@ function generateSignal() {
 }
 
 
+/* =========================================
+   LOAD CANDLES
+========================================= */
+
+
 async function loadCandles(
     symbol,
     interval
@@ -1282,8 +1676,10 @@ async function loadCandles(
     statusElement.textContent =
         "Loading market data...";
 
+
     stockName.textContent =
         symbol;
+
 
     try {
 
@@ -1295,6 +1691,7 @@ async function loadCandles(
                 encodeURIComponent(interval)
             );
 
+
         if (!response.ok) {
 
             const error =
@@ -1304,6 +1701,7 @@ async function loadCandles(
                         () => ({})
                     );
 
+
             throw new Error(
                 error.detail ||
                 "Unable to fetch market data"
@@ -1311,23 +1709,32 @@ async function loadCandles(
 
         }
 
+
         const data =
             await response.json();
 
+
         rawData = data;
+
+
+        /* CANDLE */
 
         candleSeries.setData(
             data
         );
 
 
+        /* VOLUME */
+
         const volumeData =
             data.map(
                 candle => ({
 
-                    time: candle.time,
+                    time:
+                        candle.time,
 
-                    value: candle.volume,
+                    value:
+                        candle.volume,
 
                     color:
                         candle.close >=
@@ -1344,59 +1751,86 @@ async function loadCandles(
         );
 
 
+        /* EMA 20 */
+
         if (ema20Series) {
 
             ema20Series.setData(
+
                 calculateEMA(
                     data,
                     20
                 )
+
             );
 
         }
+
+
+        /* EMA 50 */
 
         if (ema50Series) {
 
             ema50Series.setData(
+
                 calculateEMA(
                     data,
                     50
                 )
+
             );
 
         }
+
+
+        /* SMA 20 */
 
         if (sma20Series) {
 
             sma20Series.setData(
+
                 calculateSMA(
                     data,
                     20
                 )
+
             );
 
         }
+
+
+        /* SMA 50 */
 
         if (sma50Series) {
 
             sma50Series.setData(
+
                 calculateSMA(
                     data,
                     50
                 )
+
             );
 
         }
+
+
+        /* VWAP */
 
         if (vwapSeries) {
 
             vwapSeries.setData(
+
                 calculateVWAP(
                     data
                 )
+
             );
 
         }
+
+
+        /* BOLLINGER */
 
         if (bbUpperSeries) {
 
@@ -1405,13 +1839,16 @@ async function loadCandles(
                     data
                 );
 
+
             bbUpperSeries.setData(
                 bands.upper
             );
 
+
             bbMiddleSeries.setData(
                 bands.middle
             );
+
 
             bbLowerSeries.setData(
                 bands.lower
@@ -1419,6 +1856,8 @@ async function loadCandles(
 
         }
 
+
+        /* AUTO FIT */
 
         chart.timeScale()
             .fitContent();
@@ -1432,19 +1871,28 @@ async function loadCandles(
 
         generateSignal();
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(error);
+
 
         statusElement.textContent =
             "Error: " +
             error.message;
+
 
         rawData = [];
 
     }
 
 }
+
+
+/* =========================================
+   INDICATOR EVENTS
+========================================= */
 
 
 document
@@ -1495,6 +1943,11 @@ document
     );
 
 
+/* =========================================
+   VOLUME BUTTON
+========================================= */
+
+
 document
     .getElementById("volumeButton")
     .addEventListener(
@@ -1504,10 +1957,14 @@ document
             const currentlyVisible =
                 this.textContent === "ON";
 
+
             volumeSeries.applyOptions({
+
                 visible:
                     !currentlyVisible
+
             });
+
 
             setIndicatorButton(
                 "volumeButton",
@@ -1516,6 +1973,11 @@ document
 
         }
     );
+
+
+/* =========================================
+   AUTO FIT
+========================================= */
 
 
 document
@@ -1531,6 +1993,11 @@ document
     );
 
 
+/* =========================================
+   TIMEFRAME BUTTONS
+========================================= */
+
+
 document
     .querySelectorAll(".timeframe")
     .forEach(
@@ -1539,6 +2006,9 @@ document
             button.addEventListener(
                 "click",
                 function () {
+
+
+                    /* REMOVE ACTIVE */
 
                     document
                         .querySelectorAll(
@@ -1552,9 +2022,15 @@ document
                                     )
                         );
 
+
+                    /* ADD ACTIVE */
+
                     this.classList.add(
                         "active"
                     );
+
+
+                    /* LOAD NEW TIMEFRAME */
 
                     loadCandles(
                         symbolSelector.value,
@@ -1568,6 +2044,11 @@ document
     );
 
 
+/* =========================================
+   SYMBOL CHANGE
+========================================= */
+
+
 symbolSelector.addEventListener(
     "change",
     function () {
@@ -1577,15 +2058,21 @@ symbolSelector.addEventListener(
                 ".timeframe.active"
             );
 
+
         loadCandles(
             this.value,
             activeButton
                 ? activeButton.dataset.interval
-                : "1d"
+                : "5m"
         );
 
     }
 );
+
+
+/* =========================================
+   WINDOW RESIZE
+========================================= */
 
 
 window.addEventListener(
@@ -1606,9 +2093,15 @@ window.addEventListener(
 );
 
 
+/* =========================================
+   INITIAL LOAD
+   DEFAULT = 5 MINUTE
+========================================= */
+
+
 loadCandles(
     "RELIANCE.NS",
-    "1d"
+    "5m"
 );
 
 
