@@ -4,13 +4,12 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 
-
 app = FastAPI(title="Professional Trading Platform")
 
 
-# ============================================================
-# ALLOWED SYMBOLS
-# ============================================================
+# =========================================================
+# SYMBOLS
+# =========================================================
 
 ALLOWED_SYMBOLS = {
     "RELIANCE.NS",
@@ -19,48 +18,167 @@ ALLOWED_SYMBOLS = {
 }
 
 
-# ============================================================
-# INTERVAL SETTINGS
-# ============================================================
+# =========================================================
+# TIMEFRAME SETTINGS
+# =========================================================
 
 INTERVAL_SETTINGS = {
-
     "1d": {
         "period": "1mo",
-        "interval": "1d",
+        "interval": "1d"
     },
-
     "1h": {
         "period": "1mo",
-        "interval": "1h",
+        "interval": "1h"
     },
-
     "15m": {
         "period": "5d",
-        "interval": "15m",
+        "interval": "15m"
     },
-
     "5m": {
         "period": "5d",
-        "interval": "5m",
+        "interval": "5m"
     },
-
 }
 
 
-# ============================================================
+# =========================================================
 # HOME
-# ============================================================
+# =========================================================
 
 @app.get("/")
 async def root():
-
     return FileResponse("index.html")
 
 
-# ============================================================
-# GET CANDLES
-# ============================================================
+# =========================================================
+# EMA
+# =========================================================
+
+def calculate_ema(series, period):
+    return series.ewm(
+        span=period,
+        adjust=False
+    ).mean()
+
+
+# =========================================================
+# SMA
+# =========================================================
+
+def calculate_sma(series, period):
+    return series.rolling(
+        window=period
+    ).mean()
+
+
+# =========================================================
+# RSI
+# =========================================================
+
+def calculate_rsi(series, period=14):
+
+    delta = series.diff()
+
+    gain = delta.clip(lower=0)
+
+    loss = -delta.clip(upper=0)
+
+    avg_gain = gain.ewm(
+        alpha=1 / period,
+        adjust=False
+    ).mean()
+
+    avg_loss = loss.ewm(
+        alpha=1 / period,
+        adjust=False
+    ).mean()
+
+    rs = avg_gain / avg_loss.replace(
+        0,
+        np.nan
+    )
+
+    rsi = 100 - (
+        100 / (1 + rs)
+    )
+
+    return rsi.fillna(50)
+
+
+# =========================================================
+# VWAP
+# =========================================================
+
+def calculate_vwap(data):
+
+    typical_price = (
+        data["High"]
+        + data["Low"]
+        + data["Close"]
+    ) / 3
+
+    volume = data["Volume"].fillna(0)
+
+    cumulative_pv = (
+        typical_price * volume
+    ).cumsum()
+
+    cumulative_volume = (
+        volume.cumsum()
+    )
+
+    vwap = (
+        cumulative_pv
+        / cumulative_volume.replace(
+            0,
+            np.nan
+        )
+    )
+
+    return vwap.fillna(
+        data["Close"]
+    )
+
+
+# =========================================================
+# ATR
+# =========================================================
+
+def calculate_atr(data, period=14):
+
+    previous_close = data["Close"].shift(1)
+
+    tr1 = (
+        data["High"]
+        - data["Low"]
+    )
+
+    tr2 = (
+        data["High"]
+        - previous_close
+    ).abs()
+
+    tr3 = (
+        data["Low"]
+        - previous_close
+    ).abs()
+
+    true_range = pd.concat(
+        [tr1, tr2, tr3],
+        axis=1
+    ).max(axis=1)
+
+    atr = true_range.rolling(
+        period
+    ).mean()
+
+    return atr
+
+
+# =========================================================
+# CANDLE API
+# =========================================================
 
 @app.get("/api/candles/{symbol}")
 async def get_candles(
@@ -71,23 +189,18 @@ async def get_candles(
     symbol = symbol.upper()
 
     if symbol not in ALLOWED_SYMBOLS:
-
         raise HTTPException(
             status_code=400,
             detail="Invalid symbol"
         )
 
-
     if interval not in INTERVAL_SETTINGS:
-
         raise HTTPException(
             status_code=400,
             detail="Invalid interval"
         )
 
-
     settings = INTERVAL_SETTINGS[interval]
-
 
     try:
 
@@ -99,17 +212,13 @@ async def get_candles(
             auto_adjust=False
         )
 
-
         if data.empty:
-
             raise HTTPException(
                 status_code=404,
                 detail="No market data found"
             )
 
-
         candles = []
-
 
         for index, row in data.iterrows():
 
@@ -120,23 +229,29 @@ async def get_candles(
                 low_price = float(row["Low"])
                 close_price = float(row["Close"])
 
-            except:
-
+            except (
+                TypeError,
+                ValueError
+            ):
                 continue
 
-
             if not all(
-                np.isfinite(x)
-                for x in [
+                np.isfinite([
                     open_price,
                     high_price,
                     low_price,
                     close_price
-                ]
+                ])
             ):
-
                 continue
 
+            volume = row.get(
+                "Volume",
+                0
+            )
+
+            if pd.isna(volume):
+                volume = 0
 
             if interval == "1d":
 
@@ -150,23 +265,6 @@ async def get_candles(
                     index.timestamp()
                 )
 
-
-            volume_value = 0
-
-
-            try:
-
-                if pd.notna(row["Volume"]):
-
-                    volume_value = int(
-                        row["Volume"]
-                    )
-
-            except:
-
-                volume_value = 0
-
-
             candles.append({
 
                 "time": time_value,
@@ -179,18 +277,15 @@ async def get_candles(
 
                 "close": close_price,
 
-                "volume": volume_value
+                "volume": int(volume)
 
             })
 
-
         return candles
-
 
     except HTTPException:
 
         raise
-
 
     except Exception as exc:
 
@@ -200,92 +295,9 @@ async def get_candles(
         )
 
 
-# ============================================================
-# INDICATOR FUNCTIONS
-# ============================================================
-
-def calculate_ema(series, period):
-
-    return series.ewm(
-        span=period,
-        adjust=False
-    ).mean()
-
-
-def calculate_rsi(series, period=14):
-
-    delta = series.diff()
-
-    gain = delta.clip(lower=0)
-
-    loss = -delta.clip(upper=0)
-
-
-    avg_gain = gain.ewm(
-        alpha=1 / period,
-        adjust=False
-    ).mean()
-
-
-    avg_loss = loss.ewm(
-        alpha=1 / period,
-        adjust=False
-    ).mean()
-
-
-    rs = avg_gain / avg_loss.replace(
-        0,
-        np.nan
-    )
-
-
-    rsi = 100 - (
-        100 / (1 + rs)
-    )
-
-
-    return rsi.fillna(50)
-
-
-def calculate_vwap(data):
-
-    typical_price = (
-        data["High"] +
-        data["Low"] +
-        data["Close"]
-    ) / 3
-
-
-    volume = data["Volume"].fillna(0)
-
-
-    cumulative_pv = (
-        typical_price * volume
-    ).cumsum()
-
-
-    cumulative_volume = (
-        volume.cumsum()
-    )
-
-
-    vwap = (
-        cumulative_pv /
-        cumulative_volume.replace(
-            0,
-            np.nan
-        )
-    )
-
-
-    return vwap.fillna(
-        data["Close"]
-    )
-
-
-# ============================================================
-# SIGNAL ENGINE
-# ============================================================
+# =========================================================
+# SMART SIGNAL API
+# =========================================================
 
 @app.get("/api/signal/{symbol}")
 async def get_signal(
@@ -295,14 +307,12 @@ async def get_signal(
 
     symbol = symbol.upper()
 
-
     if symbol not in ALLOWED_SYMBOLS:
 
         raise HTTPException(
             status_code=400,
             detail="Invalid symbol"
         )
-
 
     if interval not in INTERVAL_SETTINGS:
 
@@ -311,21 +321,17 @@ async def get_signal(
             detail="Invalid interval"
         )
 
-
     settings = INTERVAL_SETTINGS[interval]
-
 
     try:
 
         ticker = yf.Ticker(symbol)
-
 
         data = ticker.history(
             period=settings["period"],
             interval=settings["interval"],
             auto_adjust=False
         )
-
 
         if data.empty:
 
@@ -334,125 +340,111 @@ async def get_signal(
                 detail="No market data found"
             )
 
+        data = data.dropna(
+            subset=[
+                "Open",
+                "High",
+                "Low",
+                "Close"
+            ]
+        )
 
         if len(data) < 50:
 
-            return {
+            raise HTTPException(
+                status_code=400,
+                detail="Not enough market data for signal"
+            )
 
-                "symbol": symbol,
-
-                "interval": interval,
-
-                "signal": "NEUTRAL",
-
-                "score": 0,
-
-                "max_score": 5,
-
-                "entry": None,
-
-                "stop_loss": None,
-
-                "target1": None,
-
-                "target2": None,
-
-                "reasons": [
-                    "Not enough market data"
-                ]
-
-            }
-
-
-        # ====================================================
+        # -------------------------------------------------
         # INDICATORS
-        # ====================================================
+        # -------------------------------------------------
 
-        close = data["Close"]
-
-
-        ema20 = calculate_ema(
-            close,
+        data["EMA20"] = calculate_ema(
+            data["Close"],
             20
         )
 
-
-        ema50 = calculate_ema(
-            close,
+        data["EMA50"] = calculate_ema(
+            data["Close"],
             50
         )
 
-
-        rsi = calculate_rsi(
-            close,
+        data["RSI"] = calculate_rsi(
+            data["Close"],
             14
         )
 
-
-        vwap = calculate_vwap(
+        data["VWAP"] = calculate_vwap(
             data
         )
 
-
-        latest_close = float(
-            close.iloc[-1]
+        data["ATR"] = calculate_atr(
+            data,
+            14
         )
 
-
-        latest_ema20 = float(
-            ema20.iloc[-1]
-        )
-
-
-        latest_ema50 = float(
-            ema50.iloc[-1]
-        )
-
-
-        latest_rsi = float(
-            rsi.iloc[-1]
-        )
-
-
-        latest_vwap = float(
-            vwap.iloc[-1]
-        )
-
-
-        latest_volume = float(
-            data["Volume"].iloc[-1]
-        )
-
-
-        avg_volume = float(
+        data["AVG_VOLUME"] = (
             data["Volume"]
             .rolling(20)
             .mean()
-            .iloc[-1]
         )
 
+        latest = data.iloc[-1]
 
-        # ====================================================
-        # SIGNAL SCORE
-        # ====================================================
+        price = float(
+            latest["Close"]
+        )
+
+        ema20 = float(
+            latest["EMA20"]
+        )
+
+        ema50 = float(
+            latest["EMA50"]
+        )
+
+        rsi = float(
+            latest["RSI"]
+        )
+
+        vwap = float(
+            latest["VWAP"]
+        )
+
+        volume = float(
+            latest["Volume"]
+        )
+
+        average_volume = float(
+            latest["AVG_VOLUME"]
+        ) if not pd.isna(
+            latest["AVG_VOLUME"]
+        ) else volume
+
+        atr = float(
+            latest["ATR"]
+        ) if not pd.isna(
+            latest["ATR"]
+        ) else price * 0.01
+
+        # -------------------------------------------------
+        # SCORE
+        # -------------------------------------------------
 
         buy_score = 0
-
         sell_score = 0
 
         reasons = []
 
+        # 1. PRICE vs EMA20
 
-        # ----------------------------------------------------
-        # 1. PRICE VS EMA20
-        # ----------------------------------------------------
-
-        if latest_close > latest_ema20:
+        if price > ema20:
 
             buy_score += 1
 
             reasons.append(
-                "Price above EMA 20"
+                "Price is above EMA20 → bullish"
             )
 
         else:
@@ -460,20 +452,17 @@ async def get_signal(
             sell_score += 1
 
             reasons.append(
-                "Price below EMA 20"
+                "Price is below EMA20 → bearish"
             )
 
+        # 2. EMA20 vs EMA50
 
-        # ----------------------------------------------------
-        # 2. EMA20 VS EMA50
-        # ----------------------------------------------------
-
-        if latest_ema20 > latest_ema50:
+        if ema20 > ema50:
 
             buy_score += 1
 
             reasons.append(
-                "EMA 20 above EMA 50"
+                "EMA20 is above EMA50 → bullish trend"
             )
 
         else:
@@ -481,47 +470,41 @@ async def get_signal(
             sell_score += 1
 
             reasons.append(
-                "EMA 20 below EMA 50"
+                "EMA20 is below EMA50 → bearish trend"
             )
 
-
-        # ----------------------------------------------------
         # 3. RSI
-        # ----------------------------------------------------
 
-        if latest_rsi >= 50 and latest_rsi < 70:
+        if rsi >= 50 and rsi < 70:
 
             buy_score += 1
 
             reasons.append(
-                f"RSI bullish ({latest_rsi:.1f})"
+                f"RSI {rsi:.1f} → bullish momentum"
             )
 
-        elif latest_rsi < 50:
+        elif rsi < 50:
 
             sell_score += 1
 
             reasons.append(
-                f"RSI bearish ({latest_rsi:.1f})"
+                f"RSI {rsi:.1f} → weak momentum"
             )
 
-        else:
+        elif rsi >= 70:
 
             reasons.append(
-                f"RSI high ({latest_rsi:.1f})"
+                f"RSI {rsi:.1f} → overbought zone"
             )
 
-
-        # ----------------------------------------------------
         # 4. VWAP
-        # ----------------------------------------------------
 
-        if latest_close > latest_vwap:
+        if price > vwap:
 
             buy_score += 1
 
             reasons.append(
-                "Price above VWAP"
+                "Price is above VWAP → bullish"
             )
 
         else:
@@ -529,25 +512,19 @@ async def get_signal(
             sell_score += 1
 
             reasons.append(
-                "Price below VWAP"
+                "Price is below VWAP → bearish"
             )
 
-
-        # ----------------------------------------------------
         # 5. VOLUME
-        # ----------------------------------------------------
 
-        if (
-            avg_volume > 0
-            and latest_volume > avg_volume
-        ):
+        if volume > average_volume:
 
-            if latest_close >= latest_ema20:
+            if price > ema20:
 
                 buy_score += 1
 
                 reasons.append(
-                    "Volume confirmation"
+                    "Volume is above average with bullish price action"
                 )
 
             else:
@@ -555,19 +532,18 @@ async def get_signal(
                 sell_score += 1
 
                 reasons.append(
-                    "Volume confirms weakness"
+                    "Volume is above average with bearish price action"
                 )
 
         else:
 
             reasons.append(
-                "Volume confirmation weak"
+                "Volume is below average"
             )
 
-
-        # ====================================================
+        # -------------------------------------------------
         # FINAL SIGNAL
-        # ====================================================
+        # -------------------------------------------------
 
         if buy_score >= 4:
 
@@ -581,89 +557,56 @@ async def get_signal(
 
             signal = "NEUTRAL"
 
-
-        # ====================================================
-        # ENTRY / SL / TARGET
-        # ====================================================
+        # -------------------------------------------------
+        # ENTRY / SL / TARGETS
+        # -------------------------------------------------
 
         entry = round(
-            latest_close,
+            price,
             2
         )
 
-
-        atr_high = data["High"].diff()
-
-        atr_low = data["Low"].diff().abs()
-
-        atr_close = data["Close"].diff().abs()
-
-
-        true_range = pd.concat(
-            [
-                data["High"] - data["Low"],
-                atr_high.abs(),
-                atr_low.abs()
-            ],
-            axis=1
-        ).max(axis=1)
-
-
-        atr = float(
-            true_range
-            .rolling(14)
-            .mean()
-            .iloc[-1]
-        )
-
-
-        if not np.isfinite(atr) or atr <= 0:
-
-            atr = entry * 0.01
-
+        stop_loss = None
+        target1 = None
+        target2 = None
 
         if signal == "BUY":
 
-            stop_loss = entry - (
-                atr * 1.5
+            stop_loss = round(
+                entry - (1.5 * atr),
+                2
             )
 
-            target1 = entry + (
-                atr * 2
+            target1 = round(
+                entry + (2 * atr),
+                2
             )
 
-            target2 = entry + (
-                atr * 3
+            target2 = round(
+                entry + (3 * atr),
+                2
             )
-
 
         elif signal == "SELL":
 
-            stop_loss = entry + (
-                atr * 1.5
+            stop_loss = round(
+                entry + (1.5 * atr),
+                2
             )
 
-            target1 = entry - (
-                atr * 2
+            target1 = round(
+                entry - (2 * atr),
+                2
             )
 
-            target2 = entry - (
-                atr * 3
+            target2 = round(
+                entry - (3 * atr),
+                2
             )
 
-
-        else:
-
-            stop_loss = None
-
-            target1 = None
-
-            target2 = None
-
-
-        # ====================================================
+        # -------------------------------------------------
         # RESPONSE
-        # ====================================================
+        # -------------------------------------------------
 
         return {
 
@@ -686,52 +629,40 @@ async def get_signal(
 
             "entry": entry,
 
-            "stop_loss": (
-                round(stop_loss, 2)
-                if stop_loss is not None
-                else None
-            ),
+            "stop_loss": stop_loss,
 
-            "target1": (
-                round(target1, 2)
-                if target1 is not None
-                else None
-            ),
+            "target1": target1,
 
-            "target2": (
-                round(target2, 2)
-                if target2 is not None
-                else None
-            ),
+            "target2": target2,
 
             "indicators": {
 
                 "ema20": round(
-                    latest_ema20,
+                    ema20,
                     2
                 ),
 
                 "ema50": round(
-                    latest_ema50,
+                    ema50,
                     2
                 ),
 
                 "rsi": round(
-                    latest_rsi,
+                    rsi,
                     2
                 ),
 
                 "vwap": round(
-                    latest_vwap,
+                    vwap,
                     2
                 ),
 
                 "volume": int(
-                    latest_volume
+                    volume
                 ),
 
                 "average_volume": int(
-                    avg_volume
+                    average_volume
                 )
 
             },
@@ -740,11 +671,9 @@ async def get_signal(
 
         }
 
-
     except HTTPException:
 
         raise
-
 
     except Exception as exc:
 
@@ -754,9 +683,9 @@ async def get_signal(
         )
 
 
-# ============================================================
-# START SERVER
-# ============================================================
+# =========================================================
+# RUN SERVER
+# =========================================================
 
 if __name__ == "__main__":
 
@@ -765,5 +694,6 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8000
+        port=8000,
+        reload=True
     )
