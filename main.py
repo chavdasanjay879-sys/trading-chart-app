@@ -8,17 +8,16 @@ app = FastAPI()
 def home():
     return FileResponse("index.html")
 
-@app.get("/api/candles/{symbol}")
-def get_candles(symbol: str):
-    ticker = yf.Ticker(symbol)
-    df = ticker.history(period="6mo", interval="1d")
+@app.get("/api/c/{sym}")
+def get_c(sym: str):
+    df = yf.Ticker(sym).history(period="6mo", interval="1d")
     candles = []
-    for index, row in df.iterrows():
+    for idx, r in df.iterrows():
         candles.append({
-            "time": index.strftime('%Y-%m-%d'),
-            "open": round(float(row['Open']), 2),
-            "high": round(float(row['High']), 2),
-            "low": round(float(row['Low']), 2),
-            "close": round(float(row['Close']), 2),
+            "time": idx.strftime("%Y-%m-%d"),
+            "open": round(float(r["Open"]), 2),
+            "high": round(float(r["High"]), 2),
+            "low": round(float(r["Low"]), 2),
+            "close": round(float(r["Close"]), 2)
         })
     return candles
