@@ -35,7 +35,9 @@
             overflow-x: hidden;
         }
 
-        /* TOP BAR */
+        /* =========================
+           TOP BAR
+        ========================= */
 
         .topbar {
             min-height: 58px;
@@ -79,7 +81,7 @@
 
         button.active {
             background: #2962ff;
-            color: white;
+            color: #ffffff;
             border-color: #2962ff;
         }
 
@@ -87,7 +89,16 @@
             min-width: 150px;
         }
 
-        /* MAIN LAYOUT */
+        .chart-type-label {
+            color: #787b86;
+            font-size: 12px;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
 
         .layout {
             display: flex;
@@ -101,7 +112,9 @@
             padding: 12px;
         }
 
-        /* CHART HEADER */
+        /* =========================
+           CHART HEADER
+        ========================= */
 
         .chart-header {
             height: 42px;
@@ -114,7 +127,7 @@
         }
 
         .stock-name {
-            color: white;
+            color: #ffffff;
             font-size: 16px;
             font-weight: bold;
         }
@@ -124,7 +137,9 @@
             color: #787b86;
         }
 
-        /* CHART */
+        /* =========================
+           CHART
+        ========================= */
 
         .chart-wrapper {
             width: 100%;
@@ -140,7 +155,9 @@
             height: 100%;
         }
 
-        /* SIDE PANEL */
+        /* =========================
+           SIDE PANEL
+        ========================= */
 
         .side-panel {
             width: 260px;
@@ -152,7 +169,7 @@
         .panel-title {
             font-size: 15px;
             font-weight: bold;
-            color: white;
+            color: #ffffff;
             margin-bottom: 15px;
         }
 
@@ -178,7 +195,9 @@
             font-size: 11px;
         }
 
-        /* SIGNAL */
+        /* =========================
+           SIGNAL
+        ========================= */
 
         .signal-box {
             margin-top: 20px;
@@ -219,7 +238,9 @@
             color: #787b86;
         }
 
-        /* MOBILE */
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 900px) {
 
@@ -255,333 +276,345 @@
 <body>
 
 
-    <!-- ========================= -->
-    <!-- TOP BAR -->
-    <!-- ========================= -->
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
-    <div class="topbar">
+<div class="topbar">
 
-        <div class="logo">
-            TradePro
-        </div>
+    <div class="logo">
+        TradePro
+    </div>
 
 
-        <!-- SYMBOL -->
+    <!-- SYMBOL -->
 
-        <select
-            id="symbolSelector"
-            class="symbol-select"
-        >
+    <select
+        id="symbolSelector"
+        class="symbol-select"
+    >
 
-            <option value="RELIANCE.NS">
+        <option value="RELIANCE.NS">
+            RELIANCE.NS
+        </option>
+
+        <option value="TCS.NS">
+            TCS.NS
+        </option>
+
+        <option value="INFY.NS">
+            INFY.NS
+        </option>
+
+    </select>
+
+
+    <!-- TIMEFRAMES -->
+
+    <button
+        class="timeframe"
+        data-interval="1m"
+    >
+        1m
+    </button>
+
+    <button
+        class="timeframe active"
+        data-interval="5m"
+    >
+        5m
+    </button>
+
+    <button
+        class="timeframe"
+        data-interval="15m"
+    >
+        15m
+    </button>
+
+    <button
+        class="timeframe"
+        data-interval="30m"
+    >
+        30m
+    </button>
+
+    <button
+        class="timeframe"
+        data-interval="1h"
+    >
+        1H
+    </button>
+
+    <button
+        class="timeframe"
+        data-interval="4h"
+    >
+        4H
+    </button>
+
+    <button
+        class="timeframe"
+        data-interval="1d"
+    >
+        1D
+    </button>
+
+
+    <!-- AUTO FIT -->
+
+    <button id="fitButton">
+        Auto Fit
+    </button>
+
+
+    <!-- CHART TYPE -->
+
+    <span class="chart-type-label">
+        Chart:
+    </span>
+
+    <button
+        class="chart-type active"
+        data-type="candlestick"
+    >
+        🕯 Candle
+    </button>
+
+    <button
+        class="chart-type"
+        data-type="line"
+    >
+        〰 Line
+    </button>
+
+    <button
+        class="chart-type"
+        data-type="area"
+    >
+        ▰ Area
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN LAYOUT
+===================================================== -->
+
+<div class="layout">
+
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+
+        <div class="chart-header">
+
+            <div
+                class="stock-name"
+            >
                 RELIANCE.NS
-            </option>
-
-            <option value="TCS.NS">
-                TCS.NS
-            </option>
-
-            <option value="INFY.NS">
-                INFY.NS
-            </option>
-
-        </select>
-
-
-        <!-- ========================= -->
-        <!-- TIMEFRAME BUTTONS -->
-        <!-- ========================= -->
-
-        <button
-            class="timeframe"
-            data-interval="1m"
-        >
-            1m
-        </button>
-
-
-        <button
-            class="timeframe active"
-            data-interval="5m"
-        >
-            5m
-        </button>
-
-
-        <button
-            class="timeframe"
-            data-interval="15m"
-        >
-            15m
-        </button>
-
-
-        <button
-            class="timeframe"
-            data-interval="30m"
-        >
-            30m
-        </button>
-
-
-        <button
-            class="timeframe"
-            data-interval="1h"
-        >
-            1H
-        </button>
-
-
-        <button
-            class="timeframe"
-            data-interval="4h"
-        >
-            4H
-        </button>
-
-
-        <button
-            class="timeframe"
-            data-interval="1d"
-        >
-            1D
-        </button>
-
-
-        <!-- AUTO FIT -->
-
-        <button id="fitButton">
-            Auto Fit
-        </button>
-
-    </div>
-
-
-    <!-- ========================= -->
-    <!-- MAIN LAYOUT -->
-    <!-- ========================= -->
-
-    <div class="layout">
-
-
-        <!-- MAIN CHART -->
-
-        <div class="main">
-
-
-            <div class="chart-header">
-
-                <div class="stock-name">
-                    RELIANCE.NS
-                </div>
-
-                <div
-                    id="status"
-                    class="status"
-                >
-                    Loading...
-                </div>
-
             </div>
 
-
-            <div class="chart-wrapper">
-
-                <div id="chart"></div>
-
+            <div
+                id="status"
+                class="status"
+            >
+                Loading...
             </div>
-
 
         </div>
 
 
-        <!-- ========================= -->
-        <!-- RIGHT PANEL -->
-        <!-- ========================= -->
+        <div class="chart-wrapper">
 
-        <div class="side-panel">
-
-
-            <div class="panel-title">
-                Indicators
-            </div>
-
-
-            <!-- VOLUME -->
-
-            <div class="indicator">
-
-                <span>
-                    Volume
-                </span>
-
-                <button
-                    id="volumeButton"
-                    class="active"
-                >
-                    ON
-                </button>
-
-            </div>
-
-
-            <!-- EMA 20 -->
-
-            <div class="indicator">
-
-                <span>
-                    EMA 20
-                </span>
-
-                <button id="ema20Button">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- EMA 50 -->
-
-            <div class="indicator">
-
-                <span>
-                    EMA 50
-                </span>
-
-                <button id="ema50Button">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- SMA 20 -->
-
-            <div class="indicator">
-
-                <span>
-                    SMA 20
-                </span>
-
-                <button id="sma20Button">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- SMA 50 -->
-
-            <div class="indicator">
-
-                <span>
-                    SMA 50
-                </span>
-
-                <button id="sma50Button">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- VWAP -->
-
-            <div class="indicator">
-
-                <span>
-                    VWAP
-                </span>
-
-                <button id="vwapButton">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- BOLLINGER -->
-
-            <div class="indicator">
-
-                <span>
-                    Bollinger Bands
-                </span>
-
-                <button id="bbButton">
-                    OFF
-                </button>
-
-            </div>
-
-
-            <!-- MARKET SIGNAL -->
-
-            <div class="signal-box">
-
-                <div class="signal-title">
-                    MARKET SIGNAL
-                </div>
-
-                <div
-                    id="signal"
-                    class="signal neutral"
-                >
-                    NEUTRAL
-                </div>
-
-                <div
-                    id="signalInfo"
-                    class="info"
-                >
-                    Waiting for market data...
-                </div>
-
-            </div>
-
+            <div id="chart"></div>
 
         </div>
 
 
     </div>
+
+
+    <!-- =================================================
+         RIGHT INDICATOR PANEL
+    ================================================= -->
+
+    <div class="side-panel">
+
+        <div class="panel-title">
+            Indicators
+        </div>
+
+
+        <!-- VOLUME -->
+
+        <div class="indicator">
+
+            <span>
+                Volume
+            </span>
+
+            <button
+                id="volumeButton"
+                class="active"
+            >
+                ON
+            </button>
+
+        </div>
+
+
+        <!-- EMA 20 -->
+
+        <div class="indicator">
+
+            <span>
+                EMA 20
+            </span>
+
+            <button id="ema20Button">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- EMA 50 -->
+
+        <div class="indicator">
+
+            <span>
+                EMA 50
+            </span>
+
+            <button id="ema50Button">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- SMA 20 -->
+
+        <div class="indicator">
+
+            <span>
+                SMA 20
+            </span>
+
+            <button id="sma20Button">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- SMA 50 -->
+
+        <div class="indicator">
+
+            <span>
+                SMA 50
+            </span>
+
+            <button id="sma50Button">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- VWAP -->
+
+        <div class="indicator">
+
+            <span>
+                VWAP
+            </span>
+
+            <button id="vwapButton">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- BOLLINGER -->
+
+        <div class="indicator">
+
+            <span>
+                Bollinger Bands
+            </span>
+
+            <button id="bbButton">
+                OFF
+            </button>
+
+        </div>
+
+
+        <!-- MARKET SIGNAL -->
+
+        <div class="signal-box">
+
+            <div class="signal-title">
+                MARKET SIGNAL
+            </div>
+
+            <div
+                id="signal"
+                class="signal neutral"
+            >
+                NEUTRAL
+            </div>
+
+            <div
+                id="signalInfo"
+                class="info"
+            >
+                Waiting for market data...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <script>
 
 
-/* =========================================
+/* =====================================================
    ELEMENTS
-========================================= */
-
+===================================================== */
 
 const chartContainer =
     document.getElementById("chart");
 
-
 const symbolSelector =
     document.getElementById("symbolSelector");
-
 
 const statusElement =
     document.getElementById("status");
 
-
 const stockName =
     document.querySelector(".stock-name");
 
-
 const signalElement =
     document.getElementById("signal");
-
 
 const signalInfo =
     document.getElementById("signalInfo");
 
 
-/* =========================================
-   CREATE CHART
-========================================= */
-
+/* =====================================================
+   CHART
+===================================================== */
 
 const chart =
     LightweightCharts.createChart(
@@ -594,7 +627,6 @@ const chart =
             height:
                 chartContainer.clientHeight,
 
-
             layout: {
 
                 background: {
@@ -605,7 +637,6 @@ const chart =
                     "#d1d4dc"
 
             },
-
 
             grid: {
 
@@ -619,7 +650,6 @@ const chart =
 
             },
 
-
             crosshair: {
 
                 mode:
@@ -629,14 +659,12 @@ const chart =
 
             },
 
-
             rightPriceScale: {
 
                 borderColor:
                     "#2a2e39"
 
             },
-
 
             timeScale: {
 
@@ -651,7 +679,6 @@ const chart =
 
             },
 
-
             handleScroll: {
 
                 mouseWheel:
@@ -661,7 +688,6 @@ const chart =
                     true
 
             },
-
 
             handleScale: {
 
@@ -680,51 +706,141 @@ const chart =
     );
 
 
-/* =========================================
-   CANDLESTICK
-========================================= */
+/* =====================================================
+   CHART SERIES
+===================================================== */
+
+let candleSeries = null;
+
+let lineSeries = null;
+
+let areaSeries = null;
 
 
-const candleSeries =
-    chart.addCandlestickSeries({
+/* Current chart type */
 
-        upColor:
-            "#26a69a",
-
-        downColor:
-            "#ef5350",
-
-        borderVisible:
-            false,
-
-        wickUpColor:
-            "#26a69a",
-
-        wickDownColor:
-            "#ef5350"
-
-    });
+let currentChartType =
+    "candlestick";
 
 
-/* =========================================
+/* =====================================================
+   CREATE CANDLE
+===================================================== */
+
+function createCandleSeries() {
+
+    candleSeries =
+        chart.addCandlestickSeries({
+
+            upColor:
+                "#26a69a",
+
+            downColor:
+                "#ef5350",
+
+            borderVisible:
+                false,
+
+            wickUpColor:
+                "#26a69a",
+
+            wickDownColor:
+                "#ef5350"
+
+        });
+
+}
+
+
+/* =====================================================
+   CREATE LINE
+===================================================== */
+
+function createLineSeriesForChart() {
+
+    lineSeries =
+        chart.addLineSeries({
+
+            color:
+                "#2962ff",
+
+            lineWidth:
+                2,
+
+            priceLineVisible:
+                false,
+
+            lastValueVisible:
+                true
+
+        });
+
+}
+
+
+/* =====================================================
+   CREATE AREA
+===================================================== */
+
+function createAreaSeries() {
+
+    areaSeries =
+        chart.addAreaSeries({
+
+            lineColor:
+                "#2962ff",
+
+            topColor:
+                "rgba(41, 98, 255, 0.35)",
+
+            bottomColor:
+                "rgba(41, 98, 255, 0.03)",
+
+            lineWidth:
+                2,
+
+            priceLineVisible:
+                false,
+
+            lastValueVisible:
+                true
+
+        });
+
+}
+
+
+/* =====================================================
+   CREATE INITIAL CHART
+===================================================== */
+
+createCandleSeries();
+
+
+/* =====================================================
    VOLUME
-========================================= */
-
+===================================================== */
 
 const volumeSeries =
     chart.addHistogramSeries({
 
         priceFormat: {
-            type: "volume"
+
+            type:
+                "volume"
+
         },
 
-        priceScaleId: "",
+        priceScaleId:
+            "",
 
         scaleMargins: {
 
-            top: 0.80,
+            top:
+                0.80,
 
-            bottom: 0
+            bottom:
+                0
 
         }
 
@@ -732,22 +848,23 @@ const volumeSeries =
 
 
 volumeSeries.applyOptions({
-    visible: true
+
+    visible:
+        true
+
 });
 
 
-/* =========================================
+/* =====================================================
    DATA
-========================================= */
-
+===================================================== */
 
 let rawData = [];
 
 
-/* =========================================
-   INDICATOR SERIES
-========================================= */
-
+/* =====================================================
+   INDICATORS
+===================================================== */
 
 let ema20Series = null;
 
@@ -766,16 +883,16 @@ let bbMiddleSeries = null;
 let bbLowerSeries = null;
 
 
-/* =========================================
-   CREATE LINE
-========================================= */
+/* =====================================================
+   CREATE INDICATOR LINE
+===================================================== */
 
-
-function createLineSeries() {
+function createIndicatorLine() {
 
     return chart.addLineSeries({
 
-        lineWidth: 2,
+        lineWidth:
+            2,
 
         priceLineVisible:
             false,
@@ -788,10 +905,9 @@ function createLineSeries() {
 }
 
 
-/* =========================================
+/* =====================================================
    SMA
-========================================= */
-
+===================================================== */
 
 function calculateSMA(
     data,
@@ -845,10 +961,9 @@ function calculateSMA(
 }
 
 
-/* =========================================
+/* =====================================================
    EMA
-========================================= */
-
+===================================================== */
 
 function calculateEMA(
     data,
@@ -875,7 +990,8 @@ function calculateEMA(
 
         if (ema === null) {
 
-            ema = close;
+            ema =
+                close;
 
         }
 
@@ -913,10 +1029,9 @@ function calculateEMA(
 }
 
 
-/* =========================================
+/* =====================================================
    VWAP
-========================================= */
-
+===================================================== */
 
 function calculateVWAP(data) {
 
@@ -973,10 +1088,9 @@ function calculateVWAP(data) {
 }
 
 
-/* =========================================
+/* =====================================================
    BOLLINGER BANDS
-========================================= */
-
+===================================================== */
 
 function calculateBollingerBands(
     data,
@@ -1077,9 +1191,7 @@ function calculateBollingerBands(
     return {
 
         upper,
-
         middle,
-
         lower
 
     };
@@ -1087,10 +1199,134 @@ function calculateBollingerBands(
 }
 
 
-/* =========================================
-   REMOVE SERIES
-========================================= */
+/* =====================================================
+   CHART TYPE DATA
+===================================================== */
 
+function getLineData(data) {
+
+    return data.map(
+        candle => ({
+
+            time:
+                candle.time,
+
+            value:
+                candle.close
+
+        })
+    );
+
+}
+
+
+/* =====================================================
+   CHANGE CHART TYPE
+===================================================== */
+
+function changeChartType(type) {
+
+    currentChartType =
+        type;
+
+
+    /* Remove existing main chart */
+
+    if (candleSeries) {
+
+        chart.removeSeries(
+            candleSeries
+        );
+
+        candleSeries =
+            null;
+
+    }
+
+
+    if (lineSeries) {
+
+        chart.removeSeries(
+            lineSeries
+        );
+
+        lineSeries =
+            null;
+
+    }
+
+
+    if (areaSeries) {
+
+        chart.removeSeries(
+            areaSeries
+        );
+
+        areaSeries =
+            null;
+
+    }
+
+
+    /* CANDLE */
+
+    if (
+        type ===
+        "candlestick"
+    ) {
+
+        createCandleSeries();
+
+        candleSeries.setData(
+            rawData
+        );
+
+    }
+
+
+    /* LINE */
+
+    else if (
+        type === "line"
+    ) {
+
+        createLineSeriesForChart();
+
+        lineSeries.setData(
+            getLineData(
+                rawData
+            )
+        );
+
+    }
+
+
+    /* AREA */
+
+    else if (
+        type === "area"
+    ) {
+
+        createAreaSeries();
+
+        areaSeries.setData(
+            getLineData(
+                rawData
+            )
+        );
+
+    }
+
+
+    chart.timeScale()
+        .fitContent();
+
+}
+
+
+/* =====================================================
+   REMOVE SERIES
+===================================================== */
 
 function removeSeries(series) {
 
@@ -1107,10 +1343,9 @@ function removeSeries(series) {
 }
 
 
-/* =========================================
-   INDICATOR BUTTON
-========================================= */
-
+/* =====================================================
+   BUTTON STATE
+===================================================== */
 
 function setIndicatorButton(
     id,
@@ -1118,7 +1353,9 @@ function setIndicatorButton(
 ) {
 
     const button =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
 
     button.textContent =
@@ -1135,17 +1372,16 @@ function setIndicatorButton(
 }
 
 
-/* =========================================
+/* =====================================================
    EMA 20
-========================================= */
-
+===================================================== */
 
 function toggleEMA20() {
 
     if (!ema20Series) {
 
         ema20Series =
-            createLineSeries();
+            createIndicatorLine();
 
 
         ema20Series.applyOptions({
@@ -1191,17 +1427,16 @@ function toggleEMA20() {
 }
 
 
-/* =========================================
+/* =====================================================
    EMA 50
-========================================= */
-
+===================================================== */
 
 function toggleEMA50() {
 
     if (!ema50Series) {
 
         ema50Series =
-            createLineSeries();
+            createIndicatorLine();
 
 
         ema50Series.applyOptions({
@@ -1247,17 +1482,16 @@ function toggleEMA50() {
 }
 
 
-/* =========================================
+/* =====================================================
    SMA 20
-========================================= */
-
+===================================================== */
 
 function toggleSMA20() {
 
     if (!sma20Series) {
 
         sma20Series =
-            createLineSeries();
+            createIndicatorLine();
 
 
         sma20Series.applyOptions({
@@ -1303,17 +1537,16 @@ function toggleSMA20() {
 }
 
 
-/* =========================================
+/* =====================================================
    SMA 50
-========================================= */
-
+===================================================== */
 
 function toggleSMA50() {
 
     if (!sma50Series) {
 
         sma50Series =
-            createLineSeries();
+            createIndicatorLine();
 
 
         sma50Series.applyOptions({
@@ -1359,17 +1592,16 @@ function toggleSMA50() {
 }
 
 
-/* =========================================
+/* =====================================================
    VWAP
-========================================= */
-
+===================================================== */
 
 function toggleVWAP() {
 
     if (!vwapSeries) {
 
         vwapSeries =
-            createLineSeries();
+            createIndicatorLine();
 
 
         vwapSeries.applyOptions({
@@ -1414,10 +1646,9 @@ function toggleVWAP() {
 }
 
 
-/* =========================================
-   BOLLINGER BANDS
-========================================= */
-
+/* =====================================================
+   BOLLINGER
+===================================================== */
 
 function toggleBollingerBands() {
 
@@ -1430,15 +1661,15 @@ function toggleBollingerBands() {
 
 
         bbUpperSeries =
-            createLineSeries();
+            createIndicatorLine();
 
 
         bbMiddleSeries =
-            createLineSeries();
+            createIndicatorLine();
 
 
         bbLowerSeries =
-            createLineSeries();
+            createIndicatorLine();
 
 
         bbUpperSeries.applyOptions({
@@ -1517,10 +1748,9 @@ function toggleBollingerBands() {
 }
 
 
-/* =========================================
+/* =====================================================
    MARKET SIGNAL
-========================================= */
-
+===================================================== */
 
 function generateSignal() {
 
@@ -1538,7 +1768,6 @@ function generateSignal() {
 
         signalInfo.textContent =
             "Not enough data for signal calculation.";
-
 
         return;
 
@@ -1663,10 +1892,9 @@ function generateSignal() {
 }
 
 
-/* =========================================
+/* =====================================================
    LOAD CANDLES
-========================================= */
-
+===================================================== */
 
 async function loadCandles(
     symbol,
@@ -1714,17 +1942,65 @@ async function loadCandles(
             await response.json();
 
 
-        rawData = data;
+        rawData =
+            data;
 
 
-        /* CANDLE */
+        /* Main chart */
 
-        candleSeries.setData(
-            data
-        );
+        if (
+            currentChartType ===
+            "candlestick"
+        ) {
+
+            if (!candleSeries) {
+
+                createCandleSeries();
+
+            }
+
+            candleSeries.setData(
+                data
+            );
+
+        }
+
+        else if (
+            currentChartType ===
+            "line"
+        ) {
+
+            if (!lineSeries) {
+
+                createLineSeriesForChart();
+
+            }
+
+            lineSeries.setData(
+                getLineData(data)
+            );
+
+        }
+
+        else if (
+            currentChartType ===
+            "area"
+        ) {
+
+            if (!areaSeries) {
+
+                createAreaSeries();
+
+            }
+
+            areaSeries.setData(
+                getLineData(data)
+            );
+
+        }
 
 
-        /* VOLUME */
+        /* Volume */
 
         const volumeData =
             data.map(
@@ -1830,7 +2106,7 @@ async function loadCandles(
         }
 
 
-        /* BOLLINGER */
+        /* Bollinger */
 
         if (bbUpperSeries) {
 
@@ -1857,7 +2133,7 @@ async function loadCandles(
         }
 
 
-        /* AUTO FIT */
+        /* Auto Fit */
 
         chart.timeScale()
             .fitContent();
@@ -1890,10 +2166,9 @@ async function loadCandles(
 }
 
 
-/* =========================================
+/* =====================================================
    INDICATOR EVENTS
-========================================= */
-
+===================================================== */
 
 document
     .getElementById("ema20Button")
@@ -1943,10 +2218,9 @@ document
     );
 
 
-/* =========================================
-   VOLUME BUTTON
-========================================= */
-
+/* =====================================================
+   VOLUME
+===================================================== */
 
 document
     .getElementById("volumeButton")
@@ -1975,10 +2249,9 @@ document
     );
 
 
-/* =========================================
+/* =====================================================
    AUTO FIT
-========================================= */
-
+===================================================== */
 
 document
     .getElementById("fitButton")
@@ -1993,10 +2266,9 @@ document
     );
 
 
-/* =========================================
-   TIMEFRAME BUTTONS
-========================================= */
-
+/* =====================================================
+   TIMEFRAME
+===================================================== */
 
 document
     .querySelectorAll(".timeframe")
@@ -2007,8 +2279,6 @@ document
                 "click",
                 function () {
 
-
-                    /* REMOVE ACTIVE */
 
                     document
                         .querySelectorAll(
@@ -2023,14 +2293,10 @@ document
                         );
 
 
-                    /* ADD ACTIVE */
-
                     this.classList.add(
                         "active"
                     );
 
-
-                    /* LOAD NEW TIMEFRAME */
 
                     loadCandles(
                         symbolSelector.value,
@@ -2044,10 +2310,52 @@ document
     );
 
 
-/* =========================================
-   SYMBOL CHANGE
-========================================= */
+/* =====================================================
+   CHART TYPE
+===================================================== */
 
+document
+    .querySelectorAll(".chart-type")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+
+                    document
+                        .querySelectorAll(
+                            ".chart-type"
+                        )
+                        .forEach(
+                            b =>
+                                b.classList
+                                    .remove(
+                                        "active"
+                                    )
+                        );
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+
+                    changeChartType(
+                        this.dataset.type
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   SYMBOL
+===================================================== */
 
 symbolSelector.addEventListener(
     "change",
@@ -2070,10 +2378,9 @@ symbolSelector.addEventListener(
 );
 
 
-/* =========================================
-   WINDOW RESIZE
-========================================= */
-
+/* =====================================================
+   RESIZE
+===================================================== */
 
 window.addEventListener(
     "resize",
@@ -2093,11 +2400,9 @@ window.addEventListener(
 );
 
 
-/* =========================================
+/* =====================================================
    INITIAL LOAD
-   DEFAULT = 5 MINUTE
-========================================= */
-
+===================================================== */
 
 loadCandles(
     "RELIANCE.NS",
@@ -2106,7 +2411,6 @@ loadCandles(
 
 
 </script>
-
 
 </body>
 
