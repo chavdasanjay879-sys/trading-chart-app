@@ -1,15 +1,221 @@
-OPEN_HTML
-OPEN_HEAD
-  TITLE: Trading Platform
-  SCRIPT_SRC: https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js
-CLOSE_HEAD
-OPEN_BODY style="background:#131722;color:#fff;margin:0;padding:20px;font-family:sans-serif;"
-  HEADING: Trading Chart
-  SELECT id="s" onchange="d()" style="padding:6px;background:#2a2e39;color:#fff;margin-bottom:12px;"
-    OPTION: RELIANCE.NS
-    OPTION: TCS.NS
-    OPTION: INFY.NS
-  CLOSE_SELECT
-  DIV id="c" style="width:100%;height:550px;" CLOSE_DIV
-CLOSE_BODY
-CLOSE_HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TradingView Style Chart</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: #131722;
+            color: #d1d4dc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .toolbar label {
+            font-size: 14px;
+            color: #d1d4dc;
+        }
+
+        #symbolSelector {
+            min-width: 180px;
+            padding: 10px 12px;
+            border: 1px solid #2a2e39;
+            border-radius: 4px;
+            outline: none;
+            background: #1e222d;
+            color: #d1d4dc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #symbolSelector:focus {
+            border-color: #2962ff;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 550px;
+            background: #131722;
+            border: 1px solid #2a2e39;
+            overflow: hidden;
+        }
+
+        #chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .status {
+            margin-top: 10px;
+            min-height: 20px;
+            font-size: 13px;
+            color: #787b86;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            #symbolSelector {
+                width: 100%;
+            }
+
+            .chart-wrapper {
+                height: 550px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="toolbar">
+            <label for="symbolSelector">Stock:</label>
+
+            <select id="symbolSelector">
+                <option value="RELIANCE.NS">RELIANCE.NS</option>
+                <option value="TCS.NS">TCS.NS</option>
+                <option value="INFY.NS">INFY.NS</option>
+            </select>
+        </div>
+
+        <div class="chart-wrapper">
+            <div id="chart"></div>
+        </div>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        const chartContainer = document.getElementById("chart");
+        const symbolSelector = document.getElementById("symbolSelector");
+        const statusElement = document.getElementById("status");
+
+        const chart = LightweightCharts.createChart(chartContainer, {
+            width: chartContainer.clientWidth,
+            height: 550,
+
+            layout: {
+                background: {
+                    color: "#131722"
+                },
+                textColor: "#d1d4dc"
+            },
+
+            grid: {
+                vertLines: {
+                    color: "#1e222d"
+                },
+                horzLines: {
+                    color: "#1e222d"
+                }
+            },
+
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal
+            },
+
+            rightPriceScale: {
+                borderColor: "#2a2e39"
+            },
+
+            timeScale: {
+                borderColor: "#2a2e39",
+                timeVisible: false,
+                secondsVisible: false
+            }
+        });
+
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: "#26a69a",
+            downColor: "#ef5350",
+            borderVisible: false,
+            wickUpColor: "#26a69a",
+            wickDownColor: "#ef5350"
+        });
+
+        async function loadCandles(symbol) {
+            statusElement.textContent = "Loading...";
+
+            try {
+                const response = await fetch(
+                    `/api/candles/${encodeURIComponent(symbol)}`
+                );
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+
+                    throw new Error(
+                        errorData.detail || "Failed to fetch candle data"
+                    );
+                }
+
+                const data = await response.json();
+
+                candleSeries.setData(data);
+
+                chart.timeScale().fitContent();
+
+                statusElement.textContent =
+                    `${symbol} • ${data.length} candles`;
+            } catch (error) {
+                candleSeries.setData([]);
+
+                statusElement.textContent =
+                    `Error: ${error.message}`;
+            }
+        }
+
+        symbolSelector.addEventListener("change", function () {
+            loadCandles(this.value);
+        });
+
+        const resizeObserver = new ResizeObserver(() => {
+            chart.applyOptions({
+                width: chartContainer.clientWidth,
+                height: chartContainer.clientHeight
+            });
+        });
+
+        resizeObserver.observe(chartContainer);
+
+        loadCandles(symbolSelector.value);
+    </script>
+</body>
+</html>
