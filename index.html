@@ -2,20 +2,14 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Professional Trading Platform</title>
+    <title>PRO TRADING</title>
 
     <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -28,10 +22,7 @@
             height: 100%;
             background: #0b0f14;
             color: #e5e7eb;
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             overflow: hidden;
         }
 
@@ -40,56 +31,26 @@
             flex-direction: column;
         }
 
-        /* ================================================= */
-        /* TOP BAR */
-        /* ================================================= */
-
         .topbar {
             height: 60px;
             background: #11161d;
             border-bottom: 1px solid #252c36;
             display: flex;
             align-items: center;
-            padding: 0 16px;
-            gap: 12px;
+            padding: 0 10px;
+            gap: 8px;
             flex-shrink: 0;
         }
 
         .logo {
             font-size: 19px;
-            font-weight: 700;
-            color: #ffffff;
+            font-weight: 800;
+            color: white;
             margin-right: 8px;
             white-space: nowrap;
         }
 
-        .symbol-select {
-            background: #181e26;
-            color: #ffffff;
-            border: 1px solid #303846;
-            border-radius: 6px;
-            padding: 9px 12px;
-            font-size: 14px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .symbol-select:focus {
-            border-color: #4b5563;
-        }
-
-        .toolbar {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .toolbar::-webkit-scrollbar {
-            display: none;
-        }
-
+        select,
         button {
             background: #181e26;
             color: #cbd5e1;
@@ -98,12 +59,15 @@
             padding: 8px 11px;
             cursor: pointer;
             font-size: 13px;
-            white-space: nowrap;
+        }
+
+        select {
+            outline: none;
         }
 
         button:hover {
             background: #222a35;
-            color: #ffffff;
+            color: white;
         }
 
         button.active {
@@ -112,13 +76,11 @@
             border-color: #2962ff;
         }
 
-        .spacer {
-            flex: 1;
+        .toolbar {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
         }
-
-        /* ================================================= */
-        /* MAIN */
-        /* ================================================= */
 
         .main {
             flex: 1;
@@ -138,136 +100,114 @@
             inset: 0;
         }
 
-        /* ================================================= */
-        /* RIGHT SIDEBAR */
-        /* ================================================= */
+        .bottom-info {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 10;
+            background: rgba(11, 15, 20, .85);
+            border: 1px solid #303846;
+            border-radius: 5px;
+            padding: 7px 9px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
 
         .sidebar {
-            width: 300px;
+            width: 305px;
             background: #11161d;
             border-left: 1px solid #252c36;
-            padding: 15px;
+            padding: 12px;
             overflow-y: auto;
         }
 
         .sidebar-title {
-            font-size: 16px;
+            color: white;
+            font-size: 15px;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
-        .info-card {
+        .card {
             background: #151b23;
             border: 1px solid #252d38;
             border-radius: 8px;
-            padding: 13px;
-            margin-bottom: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
 
-        .info-title {
+        .label {
             color: #94a3b8;
-            font-size: 11px;
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             letter-spacing: .5px;
         }
 
-        .info-value {
-            color: #ffffff;
+        .value {
+            color: white;
             font-size: 15px;
             font-weight: 600;
         }
 
-        /* ================================================= */
-        /* SIGNAL */
-        /* ================================================= */
-
-        .signal-box {
-            background: #151b23;
-            border: 1px solid #303846;
-            border-radius: 9px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        .signal-label {
-            color: #94a3b8;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .8px;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-
         .signal-value {
-            font-size: 25px;
+            font-size: 27px;
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
-        .signal-value.buy {
+        .buy {
             color: #22c55e;
         }
 
-        .signal-value.sell {
+        .sell {
             color: #ef4444;
         }
 
-        .signal-value.neutral {
+        .neutral {
             color: #f59e0b;
         }
 
         .signal-number {
-            color: #ffffff;
-            font-size: 23px;
+            color: white;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .signal-data {
-            font-size: 14px;
             color: #e5e7eb;
-            margin-bottom: 11px;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
-        .signal-reason {
+        .reason {
             color: #cbd5e1;
             font-size: 12px;
             line-height: 1.7;
         }
 
+        .indicator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+        }
+
+        .indicator-btn {
+            width: 100%;
+            padding: 7px;
+            font-size: 11px;
+        }
+
         .warning {
-            margin-top: 14px;
             color: #64748b;
-            font-size: 10px;
+            font-size: 9px;
             line-height: 1.5;
+            margin-top: 12px;
         }
 
-        /* ================================================= */
-        /* BOTTOM INFO */
-        /* ================================================= */
-
-        .bottom-info {
-            position: absolute;
-            left: 12px;
-            top: 10px;
-            z-index: 5;
-            pointer-events: none;
-            background: rgba(11, 15, 20, .80);
-            border: 1px solid rgba(80, 90, 105, .35);
-            border-radius: 5px;
-            padding: 7px 9px;
-            color: #cbd5e1;
-            font-size: 12px;
-        }
-
-        /* ================================================= */
-        /* RESPONSIVE */
-        /* ================================================= */
-
-        @media (max-width: 900px) {
-
+        @media(max-width:800px) {
             .sidebar {
                 width: 260px;
             }
@@ -275,11 +215,9 @@
             .logo {
                 display: none;
             }
-
         }
 
-        @media (max-width: 700px) {
-
+        @media(max-width:650px) {
             .main {
                 flex-direction: column;
             }
@@ -287,309 +225,250 @@
             .sidebar {
                 width: 100%;
                 height: 300px;
-                border-left: none;
-                border-top: 1px solid #252c36;
             }
 
             .chart-area {
                 min-height: 400px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+    <div class="topbar">
 
-<!-- ===================================================== -->
-<!-- TOP BAR -->
-<!-- ===================================================== -->
+        <div class="logo">
+            PRO TRADING
+        </div>
 
-<div class="topbar">
+        <select id="symbolSelect">
+            <option value="RELIANCE.NS">RELIANCE</option>
+            <option value="TCS.NS">TCS</option>
+            <option value="INFY.NS">INFY</option>
+        </select>
 
-    <div class="logo">
-        PRO TRADING
+        <div class="toolbar">
+
+            <button class="timeframe" data-interval="1m">1m</button>
+            <button class="timeframe active" data-interval="5m">5m</button>
+            <button class="timeframe" data-interval="15m">15m</button>
+            <button class="timeframe" data-interval="1h">1H</button>
+            <button class="timeframe" data-interval="1d">1D</button>
+
+            <button id="fitButton">Auto Fit</button>
+            <button id="resetButton">Reset</button>
+            <button id="fullscreenButton">Fullscreen</button>
+
+            <button class="chart-type active" data-type="candle">
+                Candle
+            </button>
+
+            <button class="chart-type" data-type="line">
+                Line
+            </button>
+
+            <button class="chart-type" data-type="area">
+                Area
+            </button>
+
+        </div>
     </div>
 
 
-    <select
-        id="symbolSelect"
-        class="symbol-select"
-    >
+    <div class="main">
 
-        <option value="RELIANCE.NS">
-            RELIANCE
-        </option>
+        <div class="chart-area" id="chartArea">
 
-        <option value="TCS.NS">
-            TCS
-        </option>
+            <div id="chart"></div>
 
-        <option value="INFY.NS">
-            INFY
-        </option>
-
-    </select>
-
-
-    <div class="toolbar">
-
-        <button
-            class="timeframe"
-            data-interval="1m"
-        >
-            1m
-        </button>
-
-        <button
-            class="timeframe active"
-            data-interval="5m"
-        >
-            5m
-        </button>
-
-        <button
-            class="timeframe"
-            data-interval="15m"
-        >
-            15m
-        </button>
-
-        <button
-            class="timeframe"
-            data-interval="30m"
-        >
-            30m
-        </button>
-
-        <button
-            class="timeframe"
-            data-interval="1h"
-        >
-            1H
-        </button>
-
-        <button
-            class="timeframe"
-            data-interval="4h"
-        >
-            4H
-        </button>
-
-        <button
-            class="timeframe"
-            data-interval="1d"
-        >
-            1D
-        </button>
-
-
-        <button id="fitButton">
-            Auto Fit
-        </button>
-
-        <button id="resetButton">
-            Reset
-        </button>
-
-        <button id="fullscreenButton">
-            Fullscreen
-        </button>
-
-        <button
-            class="chart-type active"
-            data-type="candle"
-        >
-            Candle
-        </button>
-
-        <button
-            class="chart-type"
-            data-type="line"
-        >
-            Line
-        </button>
-
-        <button
-            class="chart-type"
-            data-type="area"
-        >
-            Area
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ===================================================== -->
-<!-- MAIN -->
-<!-- ===================================================== -->
-
-<div class="main">
-
-
-    <!-- ================================================= -->
-    <!-- CHART -->
-    <!-- ================================================= -->
-
-    <div
-        class="chart-area"
-        id="chartArea"
-    >
-
-        <div
-            id="chart"
-        ></div>
-
-
-        <div
-            class="bottom-info"
-            id="candleInfo"
-        >
-            Loading...
-        </div>
-
-    </div>
-
-
-    <!-- ================================================= -->
-    <!-- SIDEBAR -->
-    <!-- ================================================= -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-title">
-            Market Analysis
-        </div>
-
-
-        <!-- PRICE -->
-
-        <div class="info-card">
-
-            <div class="info-title">
-                Latest Price
-            </div>
-
-            <div
-                class="info-value"
-                id="latestPrice"
-            >
-                --
+            <div class="bottom-info" id="candleInfo">
+                Loading...
             </div>
 
         </div>
 
 
-        <!-- CHANGE -->
+        <aside class="sidebar">
 
-        <div class="info-card">
-
-            <div class="info-title">
-                Last Candle
-            </div>
-
-            <div
-                class="info-value"
-                id="lastCandle"
-            >
-                --
-            </div>
-
-        </div>
-
-
-        <!-- SMART SIGNAL -->
-
-        <div class="signal-box">
-
-            <div class="signal-label">
-                🧠 SMART SIGNAL ENGINE
+            <div class="sidebar-title">
+                SMART SIGNAL ENGINE
             </div>
 
 
-            <div
-                id="signalValue"
-                class="signal-value neutral"
-            >
-                LOADING
+            <div class="card">
+
+                <div id="signalValue"
+                     class="signal-value neutral">
+                    LOADING
+                </div>
+
+                <div class="label">
+                    Score
+                </div>
+
+                <div id="signalScore"
+                     class="signal-number">
+                    -- / 5
+                </div>
+
+                <div class="label">
+                    Entry
+                </div>
+
+                <div id="signalEntry"
+                     class="signal-data">
+                    --
+                </div>
+
+                <div class="label">
+                    Stop Loss
+                </div>
+
+                <div id="signalSL"
+                     class="signal-data">
+                    --
+                </div>
+
+                <div class="label">
+                    Target 1
+                </div>
+
+                <div id="signalTarget1"
+                     class="signal-data">
+                    --
+                </div>
+
+                <div class="label">
+                    Target 2
+                </div>
+
+                <div id="signalTarget2"
+                     class="signal-data">
+                    --
+                </div>
+
+                <div class="label">
+                    Analysis
+                </div>
+
+                <div id="signalReason"
+                     class="reason">
+                    Loading market conditions...
+                </div>
+
             </div>
 
 
-            <div class="signal-label">
-                SIGNAL SCORE
+            <div class="card">
+
+                <div class="label">
+                    Indicators
+                </div>
+
+                <div class="indicator-grid">
+
+                    <button class="indicator-btn"
+                            data-indicator="ema9">
+                        EMA 9
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="ema20">
+                        EMA 20
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="ema50">
+                        EMA 50
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="ema200">
+                        EMA 200
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="sma20">
+                        SMA 20
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="sma50">
+                        SMA 50
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="sma200">
+                        SMA 200
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="vwap">
+                        VWAP
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="bollinger">
+                        Bollinger
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="supertrend">
+                        Supertrend
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="pivot">
+                        Pivot Points
+                    </button>
+
+                    <button class="indicator-btn"
+                            data-indicator="volume">
+                        Volume
+                    </button>
+
+                </div>
+
             </div>
 
-            <div
-                id="signalScore"
-                class="signal-number"
-            >
-                -- / 5
+
+            <div class="card">
+
+                <div class="label">
+                    Latest Price
+                </div>
+
+                <div id="latestPrice"
+                     class="value">
+                    --
+                </div>
+
+                <br>
+
+                <div class="label">
+                    Last Candle
+                </div>
+
+                <div id="lastCandle"
+                     class="value">
+                    --
+                </div>
+
             </div>
 
 
-            <div class="signal-label">
-                ENTRY
-            </div>
+            <div class="card">
 
-            <div
-                id="signalEntry"
-                class="signal-data"
-            >
-                --
-            </div>
+                <div class="label">
+                    Indicator Values
+                </div>
 
+                <div id="indicatorValues"
+                     class="reason">
+                    Loading...
+                </div>
 
-            <div class="signal-label">
-                STOP LOSS
-            </div>
-
-            <div
-                id="signalSL"
-                class="signal-data"
-            >
-                --
-            </div>
-
-
-            <div class="signal-label">
-                TARGET 1
-            </div>
-
-            <div
-                id="signalTarget1"
-                class="signal-data"
-            >
-                --
-            </div>
-
-
-            <div class="signal-label">
-                TARGET 2
-            </div>
-
-            <div
-                id="signalTarget2"
-                class="signal-data"
-            >
-                --
-            </div>
-
-
-            <div class="signal-label">
-                ANALYSIS
-            </div>
-
-            <div
-                id="signalReason"
-                class="signal-reason"
-            >
-                Loading market conditions...
             </div>
 
 
@@ -599,320 +478,287 @@
                 and should not be treated as financial advice.
             </div>
 
-        </div>
+        </aside>
 
-
-    </aside>
-
-</div>
-
+    </div>
 
 
 <script>
 
+"use strict";
 
-// ========================================================
-// GLOBAL VARIABLES
-// ========================================================
+
+/* =========================================================
+   GLOBALS
+========================================================= */
 
 let currentSymbol = "RELIANCE.NS";
-
 let currentInterval = "5m";
-
 let currentData = [];
-
 let currentChartType = "candle";
 
 let chart = null;
 
-let candleSeries = null;
 
-let lineSeries = null;
+/* All chart series live inside ONE object.
+   This prevents undefined-series setData errors. */
 
-let areaSeries = null;
+const series = {
+    candle: null,
+    line: null,
+    area: null,
+    volume: null,
 
-let volumeSeries = null;
+    ema9: null,
+    ema20: null,
+    ema50: null,
+    ema200: null,
 
-let ema20Series = null;
+    sma20: null,
+    sma50: null,
+    sma200: null,
 
-let ema50Series = null;
+    vwap: null,
 
-let sma20Series = null;
+    bbUpper: null,
+    bbMiddle: null,
+    bbLower: null,
 
-let sma50Series = null;
-
-let vwapSeries = null;
-
-let bbUpperSeries = null;
-
-let bbMiddleSeries = null;
-
-let bbLowerSeries = null;
+    supertrend: null,
+    pivot: null
+};
 
 
-// ========================================================
-// DOM
-// ========================================================
+const visibility = {
+    ema9: false,
+    ema20: false,
+    ema50: false,
+    ema200: false,
+
+    sma20: false,
+    sma50: false,
+    sma200: false,
+
+    vwap: false,
+    bollinger: false,
+    supertrend: false,
+    pivot: false,
+    volume: true
+};
+
 
 const chartContainer =
     document.getElementById("chart");
 
 
-// ========================================================
-// CREATE CHART
-// ========================================================
+/* =========================================================
+   CREATE CHART
+========================================================= */
 
 function createChart() {
 
-    chart = LightweightCharts.createChart(
-        chartContainer,
-        {
-
-            layout: {
-
-                background: {
-                    color: "#0b0f14"
+    chart =
+        LightweightCharts.createChart(
+            chartContainer,
+            {
+                layout: {
+                    background: {
+                        color: "#0b0f14"
+                    },
+                    textColor: "#9ca3af"
                 },
 
-                textColor: "#9ca3af"
-
-            },
-
-            grid: {
-
-                vertLines: {
-                    color: "#151b23"
+                grid: {
+                    vertLines: {
+                        color: "#151b23"
+                    },
+                    horzLines: {
+                        color: "#151b23"
+                    }
                 },
 
-                horzLines: {
-                    color: "#151b23"
+                rightPriceScale: {
+                    borderColor: "#252c36"
+                },
+
+                timeScale: {
+                    borderColor: "#252c36",
+                    timeVisible: true,
+                    secondsVisible: false
+                },
+
+                crosshair: {
+                    mode:
+                        LightweightCharts
+                            .CrosshairMode
+                            .Normal
+                },
+
+                handleScroll: {
+                    mouseWheel: true,
+                    pressedMouseMove: true,
+                    horzTouchDrag: true,
+                    vertTouchDrag: true
+                },
+
+                handleScale: {
+                    axisPressedMouseMove: true,
+                    mouseWheel: true,
+                    pinch: true
                 }
-
-            },
-
-            crosshair: {
-
-                mode:
-                    LightweightCharts.CrosshairMode.Normal
-
-            },
-
-            rightPriceScale: {
-
-                borderColor: "#252c36"
-
-            },
-
-            timeScale: {
-
-                borderColor: "#252c36",
-
-                timeVisible: true,
-
-                secondsVisible: false
-
-            },
-
-            handleScroll: {
-
-                mouseWheel: true,
-
-                pressedMouseMove: true,
-
-                horzTouchDrag: true,
-
-                vertTouchDrag: true
-
-            },
-
-            handleScale: {
-
-                axisPressedMouseMove: true,
-
-                mouseWheel: true,
-
-                pinch: true
-
             }
-
-        }
-    );
+        );
 
 
-    candleSeries =
+    series.candle =
         chart.addCandlestickSeries({
-
             upColor: "#26a69a",
-
             downColor: "#ef5350",
-
             borderUpColor: "#26a69a",
-
             borderDownColor: "#ef5350",
-
             wickUpColor: "#26a69a",
-
             wickDownColor: "#ef5350"
-
         });
 
 
-    lineSeries =
+    series.line =
         chart.addLineSeries({
-
             color: "#3b82f6",
-
             lineWidth: 2,
-
             visible: false
-
         });
 
 
-    areaSeries =
+    series.area =
         chart.addAreaSeries({
-
             lineColor: "#8b5cf6",
-
-            topColor:
-                "rgba(139,92,246,0.35)",
-
-            bottomColor:
-                "rgba(139,92,246,0.02)",
-
+            topColor: "rgba(139,92,246,.35)",
+            bottomColor: "rgba(139,92,246,.02)",
             lineWidth: 2,
-
             visible: false
-
         });
 
 
-    volumeSeries =
+    series.volume =
         chart.addHistogramSeries({
-
             priceFormat: {
                 type: "volume"
             },
+            priceScaleId: "volume",
+            visible: true
+        });
 
-            priceScaleId: "",
 
+    chart.priceScale("volume")
+        .applyOptions({
             scaleMargins: {
-
                 top: 0.82,
-
                 bottom: 0
-
             }
-
         });
 
 
-    chart.priceScale("").applyOptions({
-
-        scaleMargins: {
-
-            top: 0.82,
-
-            bottom: 0
-
-        }
-
-    });
-
-
-    ema20Series =
+    series.ema9 =
         chart.addLineSeries({
+            color: "#60a5fa",
+            lineWidth: 1,
+            visible: false
+        });
 
+
+    series.ema20 =
+        chart.addLineSeries({
             color: "#f59e0b",
-
             lineWidth: 1,
-
             visible: false
-
         });
 
 
-    ema50Series =
+    series.ema50 =
         chart.addLineSeries({
-
             color: "#ef4444",
-
             lineWidth: 1,
-
             visible: false
-
         });
 
 
-    sma20Series =
+    series.ema200 =
         chart.addLineSeries({
-
-            color: "#22c55e",
-
-            lineWidth: 1,
-
-            visible: false
-
-        });
-
-
-    sma50Series =
-        chart.addLineSeries({
-
-            color: "#06b6d4",
-
-            lineWidth: 1,
-
-            visible: false
-
-        });
-
-
-    vwapSeries =
-        chart.addLineSeries({
-
-            color: "#a855f7",
-
+            color: "#ffffff",
             lineWidth: 2,
-
             visible: false
-
         });
 
 
-    bbUpperSeries =
+    series.sma20 =
         chart.addLineSeries({
-
-            color: "#64748b",
-
+            color: "#22c55e",
             lineWidth: 1,
-
             visible: false
-
         });
 
 
-    bbMiddleSeries =
+    series.sma50 =
         chart.addLineSeries({
+            color: "#06b6d4",
+            lineWidth: 1,
+            visible: false
+        });
 
+
+    series.sma200 =
+        chart.addLineSeries({
+            color: "#ec4899",
+            lineWidth: 2,
+            visible: false
+        });
+
+
+    series.vwap =
+        chart.addLineSeries({
+            color: "#a855f7",
+            lineWidth: 2,
+            visible: false
+        });
+
+
+    series.bbUpper =
+        chart.addLineSeries({
+            color: "#64748b",
+            lineWidth: 1,
+            visible: false
+        });
+
+
+    series.bbMiddle =
+        chart.addLineSeries({
             color: "#94a3b8",
-
             lineWidth: 1,
-
             visible: false
-
         });
 
 
-    bbLowerSeries =
+    series.bbLower =
         chart.addLineSeries({
-
             color: "#64748b",
-
             lineWidth: 1,
-
             visible: false
+        });
 
+
+    series.supertrend =
+        chart.addLineSeries({
+            color: "#22c55e",
+            lineWidth: 2,
+            visible: false
+        });
+
+
+    series.pivot =
+        chart.addLineSeries({
+            color: "#f97316",
+            lineWidth: 1,
+            visible: false
         });
 
 
@@ -924,87 +770,90 @@ function createChart() {
 }
 
 
-// ========================================================
-// RESIZE
-// ========================================================
+/* =========================================================
+   RESIZE
+========================================================= */
 
 function resizeChart() {
 
-    if (!chart) {
-        return;
-    }
+    if (!chart) return;
 
     chart.applyOptions({
-
-        width:
-            chartContainer.clientWidth,
-
-        height:
-            chartContainer.clientHeight
-
+        width: chartContainer.clientWidth,
+        height: chartContainer.clientHeight
     });
 
 }
 
 
-// ========================================================
-// EMA
-// ========================================================
+/* =========================================================
+   SAFE SET DATA
+========================================================= */
+
+function safeSetData(target, data) {
+
+    if (
+        target &&
+        typeof target.setData === "function"
+    ) {
+        target.setData(
+            Array.isArray(data) ? data : []
+        );
+    }
+
+}
+
+
+/* =========================================================
+   EMA
+========================================================= */
 
 function calculateEMA(data, period) {
 
     const result = [];
 
+    if (!data.length) return result;
+
     const multiplier =
         2 / (period + 1);
 
-    let previous = null;
+    let previous =
+        Number(data[0].close);
 
 
-    for (let i = 0; i < data.length; i++) {
+    for (const candle of data) {
 
         const price =
-            data[i].close;
+            Number(candle.close);
 
-
-        if (previous === null) {
-
-            previous = price;
-
-        } else {
-
-            previous =
-                (
-                    price - previous
-                ) * multiplier
-                + previous;
-
-        }
-
+        previous =
+            (price - previous) *
+            multiplier +
+            previous;
 
         result.push({
-
-            time: data[i].time,
-
+            time: candle.time,
             value: previous
-
         });
 
     }
-
 
     return result;
 
 }
 
 
-// ========================================================
-// SMA
-// ========================================================
+/* =========================================================
+   SMA
+========================================================= */
 
 function calculateSMA(data, period) {
 
     const result = [];
+
+    if (data.length < period) {
+        return result;
+    }
 
 
     for (
@@ -1015,92 +864,87 @@ function calculateSMA(data, period) {
 
         let sum = 0;
 
-
         for (
             let j = i - period + 1;
             j <= i;
             j++
         ) {
-
-            sum += data[j].close;
-
+            sum +=
+                Number(data[j].close);
         }
 
-
         result.push({
-
             time: data[i].time,
-
             value: sum / period
-
         });
 
     }
-
 
     return result;
 
 }
 
 
-// ========================================================
-// VWAP
-// ========================================================
+/* =========================================================
+   VWAP
+========================================================= */
 
 function calculateVWAP(data) {
 
     const result = [];
 
     let cumulativePV = 0;
-
     let cumulativeVolume = 0;
 
 
     for (const candle of data) {
 
+        const high =
+            Number(candle.high);
+
+        const low =
+            Number(candle.low);
+
+        const close =
+            Number(candle.close);
+
+        const volume =
+            Number(candle.volume) || 0;
+
+
         const typicalPrice =
-            (
-                candle.high
-                + candle.low
-                + candle.close
-            ) / 3;
+            (high + low + close) / 3;
 
 
         cumulativePV +=
-            typicalPrice *
-            candle.volume;
-
+            typicalPrice * volume;
 
         cumulativeVolume +=
-            candle.volume;
+            volume;
 
 
         const value =
             cumulativeVolume > 0
                 ? cumulativePV /
                   cumulativeVolume
-                : candle.close;
+                : close;
 
 
         result.push({
-
             time: candle.time,
-
-            value: value
-
+            value
         });
 
     }
-
 
     return result;
 
 }
 
 
-// ========================================================
-// BOLLINGER BANDS
-// ========================================================
+/* =========================================================
+   BOLLINGER
+========================================================= */
 
 function calculateBollinger(
     data,
@@ -1109,10 +953,17 @@ function calculateBollinger(
 ) {
 
     const upper = [];
-
     const middle = [];
-
     const lower = [];
+
+
+    if (data.length < period) {
+        return {
+            upper,
+            middle,
+            lower
+        };
+    }
 
 
     for (
@@ -1123,17 +974,14 @@ function calculateBollinger(
 
         const values = [];
 
-
         for (
             let j = i - period + 1;
             j <= i;
             j++
         ) {
-
             values.push(
-                data[j].close
+                Number(data[j].close)
             );
-
         }
 
 
@@ -1161,287 +1009,435 @@ function calculateBollinger(
 
 
         middle.push({
-
             time: data[i].time,
-
             value: mean
-
         });
 
 
         upper.push({
-
             time: data[i].time,
-
             value:
                 mean +
                 multiplier * std
-
         });
 
 
         lower.push({
-
             time: data[i].time,
-
             value:
                 mean -
                 multiplier * std
-
         });
 
     }
 
 
     return {
-
         upper,
         middle,
         lower
-
     };
 
 }
 
 
-// ========================================================
-// CLEAN DATA
-// ========================================================
+/* =========================================================
+   SUPERTREND
+========================================================= */
+
+function calculateSupertrend(data) {
+
+    const result = [];
+
+    if (!data.length) return result;
+
+
+    let trend = 1;
+
+
+    for (let i = 0; i < data.length; i++) {
+
+        const candle = data[i];
+
+        const high =
+            Number(candle.high);
+
+        const low =
+            Number(candle.low);
+
+        const close =
+            Number(candle.close);
+
+
+        const mid =
+            (high + low) / 2;
+
+
+        if (
+            i > 0 &&
+            close <
+                Number(data[i - 1].close)
+        ) {
+            trend = -1;
+        } else {
+            trend = 1;
+        }
+
+
+        result.push({
+            time: candle.time,
+            value: mid
+        });
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   PIVOT
+========================================================= */
+
+function calculatePivot(data) {
+
+    const result = [];
+
+    if (!data.length) return result;
+
+
+    let pivot = null;
+
+
+    for (const candle of data) {
+
+        pivot =
+            (
+                Number(candle.high) +
+                Number(candle.low) +
+                Number(candle.close)
+            ) / 3;
+
+
+        result.push({
+            time: candle.time,
+            value: pivot
+        });
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   CLEAN DATA
+========================================================= */
 
 function cleanData(data) {
 
-    return data.filter(
-        candle =>
+    if (!Array.isArray(data)) {
+        return [];
+    }
 
-            candle &&
+
+    return data
+        .map(candle => ({
+            time: candle.time,
+            open: Number(candle.open),
+            high: Number(candle.high),
+            low: Number(candle.low),
+            close: Number(candle.close),
+            volume:
+                Number(candle.volume) || 0
+        }))
+        .filter(candle =>
             candle.time !== undefined &&
-            Number.isFinite(
-                Number(candle.open)
-            ) &&
-            Number.isFinite(
-                Number(candle.high)
-            ) &&
-            Number.isFinite(
-                Number(candle.low)
-            ) &&
-            Number.isFinite(
-                Number(candle.close)
-            )
+            Number.isFinite(candle.open) &&
+            Number.isFinite(candle.high) &&
+            Number.isFinite(candle.low) &&
+            Number.isFinite(candle.close)
+        );
+
+}
+
+
+/* =========================================================
+   CLEAR SERIES
+========================================================= */
+
+function clearSeries() {
+
+    Object.values(series).forEach(
+        item => safeSetData(item, [])
     );
 
 }
 
 
-// ========================================================
-// DRAW CHART
-// ========================================================
+/* =========================================================
+   DRAW CHART
+========================================================= */
 
 function drawChart() {
 
-    if (!chart) {
+    if (!chart) return;
+
+    clearSeries();
+
+
+    const data =
+        currentData;
+
+
+    if (!data.length) {
         return;
     }
 
 
-    // Clear all series
-
-    candleSeries.setData([]);
-
-    lineSeries.setData([]);
-
-    areaSeries.setData([]);
-
-    volumeSeries.setData([]);
-
-    ema20Series.setData([]);
-
-    ema50Series.setData([]);
-
-    sma20Series.setData([]);
-
-    sma50Series.setData([]);
-
-    vwapSeries.setData([]);
-
-    bbUpperSeries.setData([]);
-
-    bbMiddleSeries.setData([]);
-
-    bbLowerSeries.setData([]);
-
-
-    // Candle data
-
-    candleSeries.setData(
-        currentData
+    safeSetData(
+        series.candle,
+        data
     );
 
 
-    // Line
+    const closeData =
+        data.map(candle => ({
+            time: candle.time,
+            value: candle.close
+        }));
 
-    lineSeries.setData(
 
-        currentData.map(
-            candle => ({
-
-                time: candle.time,
-
-                value: candle.close
-
-            })
-        )
-
+    safeSetData(
+        series.line,
+        closeData
     );
 
 
-    // Area
-
-    areaSeries.setData(
-
-        currentData.map(
-            candle => ({
-
-                time: candle.time,
-
-                value: candle.close
-
-            })
-        )
-
+    safeSetData(
+        series.area,
+        closeData
     );
 
 
-    // Volume
-
-    volumeSeries.setData(
-
-        currentData.map(
-            candle => ({
-
-                time: candle.time,
-
-                value: candle.volume,
-
-                color:
-                    candle.close >= candle.open
-                        ? "rgba(38,166,154,0.45)"
-                        : "rgba(239,83,80,0.45)"
-
-            })
-        )
-
+    safeSetData(
+        series.volume,
+        data.map(candle => ({
+            time: candle.time,
+            value: candle.volume,
+            color:
+                candle.close >= candle.open
+                    ? "rgba(38,166,154,.45)"
+                    : "rgba(239,83,80,.45)"
+        }))
     );
 
 
-    // EMA
-
-    ema20Series.setData(
-        calculateEMA(
-            currentData,
-            20
-        )
+    safeSetData(
+        series.ema9,
+        calculateEMA(data, 9)
     );
 
 
-    ema50Series.setData(
-        calculateEMA(
-            currentData,
-            50
-        )
+    safeSetData(
+        series.ema20,
+        calculateEMA(data, 20)
     );
 
 
-    // SMA
-
-    sma20Series.setData(
-        calculateSMA(
-            currentData,
-            20
-        )
+    safeSetData(
+        series.ema50,
+        calculateEMA(data, 50)
     );
 
 
-    sma50Series.setData(
-        calculateSMA(
-            currentData,
-            50
-        )
+    safeSetData(
+        series.ema200,
+        calculateEMA(data, 200)
     );
 
 
-    // VWAP
-
-    vwapSeries.setData(
-        calculateVWAP(
-            currentData
-        )
+    safeSetData(
+        series.sma20,
+        calculateSMA(data, 20)
     );
 
 
-    // Bollinger
+    safeSetData(
+        series.sma50,
+        calculateSMA(data, 50)
+    );
+
+
+    safeSetData(
+        series.sma200,
+        calculateSMA(data, 200)
+    );
+
+
+    safeSetData(
+        series.vwap,
+        calculateVWAP(data)
+    );
+
 
     const bb =
         calculateBollinger(
-            currentData,
+            data,
             20,
             2
         );
 
 
-    bbUpperSeries.setData(
+    safeSetData(
+        series.bbUpper,
         bb.upper
     );
 
-    bbMiddleSeries.setData(
+    safeSetData(
+        series.bbMiddle,
         bb.middle
     );
 
-    bbLowerSeries.setData(
+    safeSetData(
+        series.bbLower,
         bb.lower
     );
 
 
-    // Visibility
+    safeSetData(
+        series.supertrend,
+        calculateSupertrend(data)
+    );
 
-    candleSeries.applyOptions({
 
+    safeSetData(
+        series.pivot,
+        calculatePivot(data)
+    );
+
+
+    series.candle.applyOptions({
         visible:
             currentChartType === "candle"
-
     });
 
 
-    lineSeries.applyOptions({
-
+    series.line.applyOptions({
         visible:
             currentChartType === "line"
-
     });
 
 
-    areaSeries.applyOptions({
-
+    series.area.applyOptions({
         visible:
             currentChartType === "area"
-
     });
 
 
-    // Fit
+    series.volume.applyOptions({
+        visible:
+            visibility.volume
+    });
+
+
+    series.ema9.applyOptions({
+        visible:
+            visibility.ema9
+    });
+
+    series.ema20.applyOptions({
+        visible:
+            visibility.ema20
+    });
+
+    series.ema50.applyOptions({
+        visible:
+            visibility.ema50
+    });
+
+    series.ema200.applyOptions({
+        visible:
+            visibility.ema200
+    });
+
+
+    series.sma20.applyOptions({
+        visible:
+            visibility.sma20
+    });
+
+    series.sma50.applyOptions({
+        visible:
+            visibility.sma50
+    });
+
+    series.sma200.applyOptions({
+        visible:
+            visibility.sma200
+    });
+
+
+    series.vwap.applyOptions({
+        visible:
+            visibility.vwap
+    });
+
+
+    series.bbUpper.applyOptions({
+        visible:
+            visibility.bollinger
+    });
+
+    series.bbMiddle.applyOptions({
+        visible:
+            visibility.bollinger
+    });
+
+    series.bbLower.applyOptions({
+        visible:
+            visibility.bollinger
+    });
+
+
+    series.supertrend.applyOptions({
+        visible:
+            visibility.supertrend
+    });
+
+
+    series.pivot.applyOptions({
+        visible:
+            visibility.pivot
+    });
+
 
     chart.timeScale()
         .fitContent();
 
+
+    updateIndicatorValues();
+
 }
 
 
-// ========================================================
-// LOAD DATA
-// ========================================================
+/* =========================================================
+   LOAD MARKET DATA
+========================================================= */
 
 async function loadData() {
 
     try {
+
+        document.getElementById(
+            "candleInfo"
+        ).textContent =
+            "Loading market data...";
+
 
         const url =
             `/api/candles/${encodeURIComponent(
@@ -1466,20 +1462,17 @@ async function loadData() {
             await response.json();
 
 
-        if (
-            !Array.isArray(data)
-            || data.length === 0
-        ) {
+        currentData =
+            cleanData(data);
+
+
+        if (!currentData.length) {
 
             throw new Error(
                 "No market data available"
             );
 
         }
-
-
-        currentData =
-            cleanData(data);
 
 
         drawChart();
@@ -1493,7 +1486,7 @@ async function loadData() {
 
         updateLatestPrice();
 
-        updateSignal();
+        await updateSignal();
 
     }
 
@@ -1518,6 +1511,12 @@ async function loadData() {
 
 
         document.getElementById(
+            "signalValue"
+        ).className =
+            "signal-value neutral";
+
+
+        document.getElementById(
             "signalReason"
         ).textContent =
             error.message;
@@ -1527,19 +1526,13 @@ async function loadData() {
 }
 
 
-// ========================================================
-// LATEST PRICE
-// ========================================================
+/* =========================================================
+   LATEST PRICE
+========================================================= */
 
 function updateLatestPrice() {
 
-    if (
-        !currentData.length
-    ) {
-
-        return;
-
-    }
+    if (!currentData.length) return;
 
 
     const last =
@@ -1551,9 +1544,7 @@ function updateLatestPrice() {
     document.getElementById(
         "latestPrice"
     ).textContent =
-        `₹${Number(
-            last.close
-        ).toFixed(2)}`;
+        `₹${last.close.toFixed(2)}`;
 
 
     const direction =
@@ -1565,16 +1556,14 @@ function updateLatestPrice() {
     document.getElementById(
         "lastCandle"
     ).textContent =
-        `${direction} • ₹${Number(
-            last.close
-        ).toFixed(2)}`;
+        `${direction} • ₹${last.close.toFixed(2)}`;
 
 }
 
 
-// ========================================================
-// SMART SIGNAL
-// ========================================================
+/* =========================================================
+   SIGNAL
+========================================================= */
 
 async function updateSignal() {
 
@@ -1603,151 +1592,86 @@ async function updateSignal() {
             await response.json();
 
 
+        const signal =
+            data.signal || "NEUTRAL";
+
+
         const signalElement =
             document.getElementById(
                 "signalValue"
             );
 
 
-        const scoreElement =
-            document.getElementById(
-                "signalScore"
-            );
-
-
-        const entryElement =
-            document.getElementById(
-                "signalEntry"
-            );
-
-
-        const slElement =
-            document.getElementById(
-                "signalSL"
-            );
-
-
-        const target1Element =
-            document.getElementById(
-                "signalTarget1"
-            );
-
-
-        const target2Element =
-            document.getElementById(
-                "signalTarget2"
-            );
-
-
-        const reasonElement =
-            document.getElementById(
-                "signalReason"
-            );
-
-
-        // SIGNAL
-
         signalElement.textContent =
-            data.signal || "NEUTRAL";
+            signal;
 
 
         signalElement.className =
             "signal-value " +
             (
-                data.signal === "BUY"
+                signal === "BUY"
                     ? "buy"
-                    : data.signal === "SELL"
+                    : signal === "SELL"
                         ? "sell"
                         : "neutral"
             );
 
 
-        // SCORE
-
-        scoreElement.textContent =
-            `${data.score || 0} / ${
-                data.max_score || 5
-            }`;
+        document.getElementById(
+            "signalScore"
+        ).textContent =
+            `${data.score || 0} / ${data.max_score || 5}`;
 
 
-        // ENTRY
-
-        entryElement.textContent =
-            data.entry !== null &&
-            data.entry !== undefined
-
-                ? `₹${Number(
-                    data.entry
-                ).toFixed(2)}`
-
+        document.getElementById(
+            "signalEntry"
+        ).textContent =
+            data.entry != null
+                ? `₹${Number(data.entry).toFixed(2)}`
                 : "--";
 
 
-        // SL
-
-        slElement.textContent =
-            data.stop_loss !== null &&
-            data.stop_loss !== undefined
-
-                ? `₹${Number(
-                    data.stop_loss
-                ).toFixed(2)}`
-
+        document.getElementById(
+            "signalSL"
+        ).textContent =
+            data.stop_loss != null
+                ? `₹${Number(data.stop_loss).toFixed(2)}`
                 : "--";
 
 
-        // TARGET 1
-
-        target1Element.textContent =
-            data.target1 !== null &&
-            data.target1 !== undefined
-
-                ? `₹${Number(
-                    data.target1
-                ).toFixed(2)}`
-
+        document.getElementById(
+            "signalTarget1"
+        ).textContent =
+            data.target1 != null
+                ? `₹${Number(data.target1).toFixed(2)}`
                 : "--";
 
 
-        // TARGET 2
-
-        target2Element.textContent =
-            data.target2 !== null &&
-            data.target2 !== undefined
-
-                ? `₹${Number(
-                    data.target2
-                ).toFixed(2)}`
-
+        document.getElementById(
+            "signalTarget2"
+        ).textContent =
+            data.target2 != null
+                ? `₹${Number(data.target2).toFixed(2)}`
                 : "--";
 
 
-        // REASONS
+        const reasons =
+            Array.isArray(data.reasons)
+                ? data.reasons
+                : [];
 
-        if (
-            Array.isArray(
-                data.reasons
-            )
-            &&
-            data.reasons.length > 0
-        ) {
 
-            reasonElement.innerHTML =
-                data.reasons
+        document.getElementById(
+            "signalReason"
+        ).innerHTML =
+            reasons.length
+                ? reasons
                     .map(
                         reason =>
                             `• ${reason}`
                     )
-                    .join("<br>");
-
-        }
-
-        else {
-
-            reasonElement.textContent =
-                "No analysis available.";
-
-        }
+                    .join("<br>")
+                : "No analysis available.";
 
     }
 
@@ -1811,9 +1735,86 @@ async function updateSignal() {
 }
 
 
-// ========================================================
-// TIMEFRAME BUTTONS
-// ========================================================
+/* =========================================================
+   INDICATOR VALUES
+========================================================= */
+
+function updateIndicatorValues() {
+
+    if (!currentData.length) return;
+
+
+    const data =
+        currentData;
+
+
+    const last =
+        data[data.length - 1];
+
+
+    const ema20 =
+        calculateEMA(data, 20);
+
+
+    const ema50 =
+        calculateEMA(data, 50);
+
+
+    const vwap =
+        calculateVWAP(data);
+
+
+    const ema20Last =
+        ema20.length
+            ? ema20[ema20.length - 1].value
+            : null;
+
+
+    const ema50Last =
+        ema50.length
+            ? ema50[ema50.length - 1].value
+            : null;
+
+
+    const vwapLast =
+        vwap.length
+            ? vwap[vwap.length - 1].value
+            : null;
+
+
+    document.getElementById(
+        "indicatorValues"
+    ).innerHTML = `
+
+        Price:
+        ₹${last.close.toFixed(2)}
+        <br>
+
+        EMA 20:
+        ${ema20Last != null
+            ? ema20Last.toFixed(2)
+            : "--"}
+        <br>
+
+        EMA 50:
+        ${ema50Last != null
+            ? ema50Last.toFixed(2)
+            : "--"}
+        <br>
+
+        VWAP:
+        ${vwapLast != null
+            ? vwapLast.toFixed(2)
+            : "--"}
+
+    `;
+
+}
+
+
+/* =========================================================
+   TIMEFRAME BUTTONS
+========================================================= */
 
 document.querySelectorAll(
     ".timeframe"
@@ -1827,9 +1828,8 @@ document.querySelectorAll(
                 button.dataset.interval;
 
 
-            // Current backend supports these
-
             const supported = [
+                "1m",
                 "5m",
                 "15m",
                 "1h",
@@ -1846,7 +1846,7 @@ document.querySelectorAll(
                 document.getElementById(
                     "candleInfo"
                 ).textContent =
-                    `${interval.toUpperCase()} is not currently supported by Yahoo Finance backend.`;
+                    `${interval} is not supported by backend.`;
 
                 return;
 
@@ -1855,11 +1855,10 @@ document.querySelectorAll(
 
             document.querySelectorAll(
                 ".timeframe"
-            ).forEach(
-                btn =>
-                    btn.classList.remove(
-                        "active"
-                    )
+            ).forEach(btn =>
+                btn.classList.remove(
+                    "active"
+                )
             );
 
 
@@ -1880,9 +1879,9 @@ document.querySelectorAll(
 });
 
 
-// ========================================================
-// SYMBOL CHANGE
-// ========================================================
+/* =========================================================
+   SYMBOL
+========================================================= */
 
 document.getElementById(
     "symbolSelect"
@@ -1899,111 +1898,9 @@ document.getElementById(
 );
 
 
-// ========================================================
-// AUTO FIT
-// ========================================================
-
-document.getElementById(
-    "fitButton"
-).addEventListener(
-    "click",
-    () => {
-
-        if (!chart) {
-            return;
-        }
-
-        chart.timeScale()
-            .fitContent();
-
-    }
-);
-
-
-// ========================================================
-// RESET
-// ========================================================
-
-document.getElementById(
-    "resetButton"
-).addEventListener(
-    "click",
-    () => {
-
-        if (!chart) {
-            return;
-        }
-
-        chart.timeScale()
-            .fitContent();
-
-        chart.priceScale(
-            "right"
-        ).applyOptions({
-
-            autoScale: true
-
-        });
-
-    }
-);
-
-
-// ========================================================
-// FULLSCREEN
-// ========================================================
-
-document.getElementById(
-    "fullscreenButton"
-).addEventListener(
-    "click",
-    async () => {
-
-        const chartArea =
-            document.getElementById(
-                "chartArea"
-            );
-
-
-        if (
-            !document.fullscreenElement
-        ) {
-
-            try {
-
-                await chartArea.requestFullscreen();
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-            }
-
-        }
-
-        else {
-
-            await document.exitFullscreen();
-
-        }
-
-
-        setTimeout(
-            resizeChart,
-            300
-        );
-
-    }
-);
-
-
-// ========================================================
-// CHART TYPE
-// ========================================================
+/* =========================================================
+   CHART TYPE
+========================================================= */
 
 document.querySelectorAll(
     ".chart-type"
@@ -2015,11 +1912,10 @@ document.querySelectorAll(
 
             document.querySelectorAll(
                 ".chart-type"
-            ).forEach(
-                btn =>
-                    btn.classList.remove(
-                        "active"
-                    )
+            ).forEach(btn =>
+                btn.classList.remove(
+                    "active"
+                )
             );
 
 
@@ -2040,17 +1936,140 @@ document.querySelectorAll(
 });
 
 
-// ========================================================
-// INIT
-// ========================================================
+/* =========================================================
+   INDICATOR BUTTONS
+========================================================= */
+
+document.querySelectorAll(
+    ".indicator-btn"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const indicator =
+                button.dataset.indicator;
+
+
+            visibility[indicator] =
+                !visibility[indicator];
+
+
+            button.classList.toggle(
+                "active",
+                visibility[indicator]
+            );
+
+
+            drawChart();
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   AUTO FIT
+========================================================= */
+
+document.getElementById(
+    "fitButton"
+).addEventListener(
+    "click",
+    () => {
+
+        if (!chart) return;
+
+        chart.timeScale()
+            .fitContent();
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+document.getElementById(
+    "resetButton"
+).addEventListener(
+    "click",
+    () => {
+
+        if (!chart) return;
+
+        chart.timeScale()
+            .fitContent();
+
+        chart.priceScale("right")
+            .applyOptions({
+                autoScale: true
+            });
+
+    }
+);
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+document.getElementById(
+    "fullscreenButton"
+).addEventListener(
+    "click",
+    async () => {
+
+        const area =
+            document.getElementById(
+                "chartArea"
+            );
+
+
+        if (!document.fullscreenElement) {
+
+            try {
+
+                await area.requestFullscreen();
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+            }
+
+        } else {
+
+            await document.exitFullscreen();
+
+        }
+
+
+        setTimeout(
+            resizeChart,
+            300
+        );
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
 
 createChart();
 
-loadData();
+resizeChart();
 
+loadData();
 
 </script>
 
 </body>
-
 </html>
