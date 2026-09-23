@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Trading Platform</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Professional Trading Platform</title>
 
     <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -20,52 +27,100 @@
             width: 100%;
             height: 100%;
             background: #131722;
-            color: #ffffff;
+            color: #d1d4dc;
             font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
-            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .container {
+        .topbar {
+            height: 58px;
             width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+            background: #1e222d;
+            border-bottom: 1px solid #2a2e39;
 
-        .toolbar {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+
+            padding: 0 15px;
         }
 
-        .toolbar label {
-            font-size: 14px;
-            color: #d1d4dc;
-        }
-
-        #symbolSelector {
-            padding: 8px 12px;
-            background: #1e222d;
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
             color: #ffffff;
-            border: 1px solid #2a2e39;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            outline: none;
+            margin-right: 10px;
         }
 
-        #symbolSelector:focus {
+        select,
+        button {
+            background: #131722;
+            color: #d1d4dc;
+            border: 1px solid #363a45;
+            border-radius: 4px;
+            padding: 8px 11px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        select:hover,
+        button:hover {
             border-color: #2962ff;
         }
 
-        .chart-container {
+        button.active {
+            background: #2962ff;
+            color: white;
+            border-color: #2962ff;
+        }
+
+        .symbol-select {
+            min-width: 150px;
+        }
+
+        .layout {
+            display: flex;
+            width: 100%;
+            min-height: calc(100vh - 58px);
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+        }
+
+        .chart-header {
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 8px;
+        }
+
+        .stock-name {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #787b86;
+        }
+
+        .chart-wrapper {
             width: 100%;
             height: 550px;
-            background: #131722;
+            position: relative;
+
             border: 1px solid #2a2e39;
+            background: #131722;
         }
 
         #chart {
@@ -73,68 +128,395 @@
             height: 100%;
         }
 
-        #status {
-            margin-top: 8px;
+        .side-panel {
+            width: 260px;
+            background: #1e222d;
+            border-left: 1px solid #2a2e39;
+            padding: 15px;
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 11px 8px;
+
+            margin-bottom: 7px;
+
+            background: #131722;
+            border: 1px solid #2a2e39;
+            border-radius: 4px;
+        }
+
+        .indicator span {
             font-size: 13px;
+        }
+
+        .indicator button {
+            padding: 5px 9px;
+            font-size: 11px;
+        }
+
+        .signal-box {
+            margin-top: 20px;
+            padding: 15px;
+
+            background: #131722;
+            border: 1px solid #2a2e39;
+            border-radius: 5px;
+        }
+
+        .signal-title {
+            font-size: 12px;
+            color: #787b86;
+            margin-bottom: 8px;
+        }
+
+        .signal {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .neutral {
+            color: #d1d4dc;
+        }
+
+        .buy {
+            color: #26a69a;
+        }
+
+        .sell {
+            color: #ef5350;
+        }
+
+        .info {
+            margin-top: 10px;
+            font-size: 11px;
+            line-height: 1.6;
             color: #787b86;
         }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
+        @media (max-width: 900px) {
+
+            .side-panel {
+                width: 220px;
             }
 
-            .toolbar {
-                flex-direction: column;
-                align-items: flex-start;
+            .topbar {
+                overflow-x: auto;
             }
 
-            #symbolSelector {
-                width: 100%;
-            }
-
-            .chart-container {
-                height: 550px;
-            }
         }
+
+        @media (max-width: 700px) {
+
+            .layout {
+                display: block;
+            }
+
+            .side-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #2a2e39;
+            }
+
+            .chart-wrapper {
+                height: 500px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
 
-        <div class="toolbar">
-            <label for="symbolSelector">Stock:</label>
+    <div class="topbar">
 
-            <select id="symbolSelector">
-                <option value="RELIANCE.NS">RELIANCE.NS</option>
-                <option value="TCS.NS">TCS.NS</option>
-                <option value="INFY.NS">INFY.NS</option>
-            </select>
+        <div class="logo">
+            TradePro
         </div>
 
-        <div class="chart-container">
-            <div id="chart"></div>
-        </div>
+        <select
+            id="symbolSelector"
+            class="symbol-select"
+        >
+            <option value="RELIANCE.NS">
+                RELIANCE.NS
+            </option>
 
-        <div id="status">Loading...</div>
+            <option value="TCS.NS">
+                TCS.NS
+            </option>
+
+            <option value="INFY.NS">
+                INFY.NS
+            </option>
+        </select>
+
+
+        <button
+            class="timeframe active"
+            data-interval="1d"
+        >
+            1D
+        </button>
+
+        <button
+            class="timeframe"
+            data-interval="1h"
+        >
+            1H
+        </button>
+
+        <button
+            class="timeframe"
+            data-interval="15m"
+        >
+            15m
+        </button>
+
+        <button
+            class="timeframe"
+            data-interval="5m"
+        >
+            5m
+        </button>
+
+
+        <button id="fitButton">
+            Auto Fit
+        </button>
 
     </div>
 
-    <script>
-        const chartContainer = document.getElementById("chart");
-        const symbolSelector = document.getElementById("symbolSelector");
-        const status = document.getElementById("status");
 
-        const chart = LightweightCharts.createChart(chartContainer, {
+    <div class="layout">
+
+
+        <div class="main">
+
+
+            <div class="chart-header">
+
+                <div class="stock-name">
+                    RELIANCE.NS
+                </div>
+
+                <div
+                    id="status"
+                    class="status"
+                >
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <div id="chart"></div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="side-panel">
+
+
+            <div class="panel-title">
+                Indicators
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    Volume
+                </span>
+
+                <button
+                    id="volumeButton"
+                    class="active"
+                >
+                    ON
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    EMA 20
+                </span>
+
+                <button
+                    id="ema20Button"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    EMA 50
+                </span>
+
+                <button
+                    id="ema50Button"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    SMA 20
+                </span>
+
+                <button
+                    id="sma20Button"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    SMA 50
+                </span>
+
+                <button
+                    id="sma50Button"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    VWAP
+                </span>
+
+                <button
+                    id="vwapButton"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    Bollinger Bands
+                </span>
+
+                <button
+                    id="bbButton"
+                >
+                    OFF
+                </button>
+
+            </div>
+
+
+            <div class="signal-box">
+
+                <div class="signal-title">
+                    MARKET SIGNAL
+                </div>
+
+                <div
+                    id="signal"
+                    class="signal neutral"
+                >
+                    NEUTRAL
+                </div>
+
+                <div
+                    id="signalInfo"
+                    class="info"
+                >
+                    Waiting for market data...
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+<script>
+
+
+const chartContainer =
+    document.getElementById("chart");
+
+
+const symbolSelector =
+    document.getElementById("symbolSelector");
+
+
+const statusElement =
+    document.getElementById("status");
+
+
+const stockName =
+    document.querySelector(".stock-name");
+
+
+const signalElement =
+    document.getElementById("signal");
+
+
+const signalInfo =
+    document.getElementById("signalInfo");
+
+
+const chart =
+    LightweightCharts.createChart(
+        chartContainer,
+        {
             width: chartContainer.clientWidth,
-            height: 550,
+
+            height: chartContainer.clientHeight,
 
             layout: {
                 background: {
                     color: "#131722"
                 },
+
                 textColor: "#d1d4dc"
             },
 
@@ -142,13 +524,17 @@
                 vertLines: {
                     color: "#1e222d"
                 },
+
                 horzLines: {
                     color: "#1e222d"
                 }
             },
 
             crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal
+                mode:
+                    LightweightCharts
+                    .CrosshairMode
+                    .Normal
             },
 
             rightPriceScale: {
@@ -157,67 +543,1078 @@
 
             timeScale: {
                 borderColor: "#2a2e39",
-                timeVisible: false,
+
+                timeVisible: true,
+
                 secondsVisible: false
-            }
-        });
+            },
 
-        const candleSeries = chart.addCandlestickSeries({
-            upColor: "#26a69a",
-            downColor: "#ef5350",
-            borderVisible: false,
-            wickUpColor: "#26a69a",
-            wickDownColor: "#ef5350"
-        });
+            handleScroll: {
+                mouseWheel: true,
 
-        async function loadCandles(symbol) {
-            status.textContent = "Loading " + symbol + "...";
+                pressedMouseMove: true
+            },
 
-            try {
-                const response = await fetch(
-                    "/api/candles/" + encodeURIComponent(symbol)
-                );
+            handleScale: {
+                axisPressedMouseMove: true,
 
-                if (!response.ok) {
-                    const error = await response.json().catch(() => ({}));
+                mouseWheel: true,
 
-                    throw new Error(
-                        error.detail || "Failed to fetch candle data"
-                    );
-                }
-
-                const data = await response.json();
-
-                candleSeries.setData(data);
-
-                chart.timeScale().fitContent();
-
-                status.textContent =
-                    symbol + " • " + data.length + " candles";
-
-            } catch (error) {
-                candleSeries.setData([]);
-
-                status.textContent =
-                    "Error: " + error.message;
-
-                console.error(error);
+                pinch: true
             }
         }
+    );
 
-        symbolSelector.addEventListener("change", function () {
-            loadCandles(this.value);
-        });
 
-        window.addEventListener("resize", function () {
-            chart.applyOptions({
-                width: chartContainer.clientWidth,
-                height: chartContainer.clientHeight
+const candleSeries =
+    chart.addCandlestickSeries({
+
+        upColor: "#26a69a",
+
+        downColor: "#ef5350",
+
+        borderVisible: false,
+
+        wickUpColor: "#26a69a",
+
+        wickDownColor: "#ef5350"
+
+    });
+
+
+const volumeSeries =
+    chart.addHistogramSeries({
+
+        priceFormat: {
+            type: "volume"
+        },
+
+        priceScaleId: "",
+
+        scaleMargins: {
+            top: 0.80,
+            bottom: 0
+        }
+
+    });
+
+
+volumeSeries.applyOptions({
+    visible: true
+});
+
+
+let rawData = [];
+
+
+let ema20Series = null;
+let ema50Series = null;
+
+let sma20Series = null;
+let sma50Series = null;
+
+let vwapSeries = null;
+
+let bbUpperSeries = null;
+let bbMiddleSeries = null;
+let bbLowerSeries = null;
+
+
+function createLineSeries() {
+
+    return chart.addLineSeries({
+
+        lineWidth: 2,
+
+        priceLineVisible: false,
+
+        lastValueVisible: false
+
+    });
+
+}
+
+
+function calculateSMA(data, period) {
+
+    const result = [];
+
+    let sum = 0;
+
+    for (let i = 0; i < data.length; i++) {
+
+        sum += data[i].close;
+
+        if (i >= period) {
+            sum -= data[i - period].close;
+        }
+
+        if (i >= period - 1) {
+
+            result.push({
+
+                time: data[i].time,
+
+                value: sum / period
+
             });
+
+        }
+
+    }
+
+    return result;
+}
+
+
+function calculateEMA(data, period) {
+
+    const result = [];
+
+    const multiplier =
+        2 / (period + 1);
+
+    let ema = null;
+
+    for (let i = 0; i < data.length; i++) {
+
+        const close =
+            data[i].close;
+
+        if (ema === null) {
+
+            ema = close;
+
+        } else {
+
+            ema =
+                (close - ema) *
+                multiplier +
+                ema;
+
+        }
+
+        if (i >= period - 1) {
+
+            result.push({
+
+                time: data[i].time,
+
+                value: ema
+
+            });
+
+        }
+
+    }
+
+    return result;
+}
+
+
+function calculateVWAP(data) {
+
+    const result = [];
+
+    let cumulativePV = 0;
+
+    let cumulativeVolume = 0;
+
+    for (const candle of data) {
+
+        const typicalPrice =
+            (
+                candle.high +
+                candle.low +
+                candle.close
+            ) / 3;
+
+        cumulativePV +=
+            typicalPrice *
+            candle.volume;
+
+        cumulativeVolume +=
+            candle.volume;
+
+        if (cumulativeVolume > 0) {
+
+            result.push({
+
+                time: candle.time,
+
+                value:
+                    cumulativePV /
+                    cumulativeVolume
+
+            });
+
+        }
+
+    }
+
+    return result;
+}
+
+
+function calculateBollingerBands(
+    data,
+    period = 20,
+    multiplier = 2
+) {
+
+    const upper = [];
+    const middle = [];
+    const lower = [];
+
+    for (
+        let i = period - 1;
+        i < data.length;
+        i++
+    ) {
+
+        const values =
+            data
+                .slice(
+                    i - period + 1,
+                    i + 1
+                )
+                .map(
+                    item => item.close
+                );
+
+        const mean =
+            values.reduce(
+                (a, b) => a + b,
+                0
+            ) / period;
+
+        const variance =
+            values.reduce(
+                (sum, value) =>
+                    sum +
+                    Math.pow(
+                        value - mean,
+                        2
+                    ),
+                0
+            ) / period;
+
+        const standardDeviation =
+            Math.sqrt(variance);
+
+        upper.push({
+
+            time: data[i].time,
+
+            value:
+                mean +
+                multiplier *
+                standardDeviation
+
         });
 
-        loadCandles(symbolSelector.value);
-    </script>
+        middle.push({
+
+            time: data[i].time,
+
+            value: mean
+
+        });
+
+        lower.push({
+
+            time: data[i].time,
+
+            value:
+                mean -
+                multiplier *
+                standardDeviation
+
+        });
+
+    }
+
+    return {
+        upper,
+        middle,
+        lower
+    };
+
+}
+
+
+function removeSeries(series) {
+
+    if (series) {
+
+        chart.removeSeries(series);
+
+    }
+
+    return null;
+
+}
+
+
+function setIndicatorButton(
+    id,
+    enabled
+) {
+
+    const button =
+        document.getElementById(id);
+
+    button.textContent =
+        enabled ? "ON" : "OFF";
+
+    button.classList.toggle(
+        "active",
+        enabled
+    );
+
+}
+
+
+function toggleEMA20() {
+
+    if (!ema20Series) {
+
+        ema20Series =
+            createLineSeries();
+
+        ema20Series.applyOptions({
+
+            color: "#2962ff"
+
+        });
+
+        ema20Series.setData(
+            calculateEMA(
+                rawData,
+                20
+            )
+        );
+
+        setIndicatorButton(
+            "ema20Button",
+            true
+        );
+
+    } else {
+
+        ema20Series =
+            removeSeries(
+                ema20Series
+            );
+
+        setIndicatorButton(
+            "ema20Button",
+            false
+        );
+
+    }
+
+}
+
+
+function toggleEMA50() {
+
+    if (!ema50Series) {
+
+        ema50Series =
+            createLineSeries();
+
+        ema50Series.applyOptions({
+
+            color: "#ff9800"
+
+        });
+
+        ema50Series.setData(
+            calculateEMA(
+                rawData,
+                50
+            )
+        );
+
+        setIndicatorButton(
+            "ema50Button",
+            true
+        );
+
+    } else {
+
+        ema50Series =
+            removeSeries(
+                ema50Series
+            );
+
+        setIndicatorButton(
+            "ema50Button",
+            false
+        );
+
+    }
+
+}
+
+
+function toggleSMA20() {
+
+    if (!sma20Series) {
+
+        sma20Series =
+            createLineSeries();
+
+        sma20Series.applyOptions({
+
+            color: "#9c27b0"
+
+        });
+
+        sma20Series.setData(
+            calculateSMA(
+                rawData,
+                20
+            )
+        );
+
+        setIndicatorButton(
+            "sma20Button",
+            true
+        );
+
+    } else {
+
+        sma20Series =
+            removeSeries(
+                sma20Series
+            );
+
+        setIndicatorButton(
+            "sma20Button",
+            false
+        );
+
+    }
+
+}
+
+
+function toggleSMA50() {
+
+    if (!sma50Series) {
+
+        sma50Series =
+            createLineSeries();
+
+        sma50Series.applyOptions({
+
+            color: "#00bcd4"
+
+        });
+
+        sma50Series.setData(
+            calculateSMA(
+                rawData,
+                50
+            )
+        );
+
+        setIndicatorButton(
+            "sma50Button",
+            true
+        );
+
+    } else {
+
+        sma50Series =
+            removeSeries(
+                sma50Series
+            );
+
+        setIndicatorButton(
+            "sma50Button",
+            false
+        );
+
+    }
+
+}
+
+
+function toggleVWAP() {
+
+    if (!vwapSeries) {
+
+        vwapSeries =
+            createLineSeries();
+
+        vwapSeries.applyOptions({
+
+            color: "#e91e63"
+
+        });
+
+        vwapSeries.setData(
+            calculateVWAP(
+                rawData
+            )
+        );
+
+        setIndicatorButton(
+            "vwapButton",
+            true
+        );
+
+    } else {
+
+        vwapSeries =
+            removeSeries(
+                vwapSeries
+            );
+
+        setIndicatorButton(
+            "vwapButton",
+            false
+        );
+
+    }
+
+}
+
+
+function toggleBollingerBands() {
+
+    if (!bbUpperSeries) {
+
+        const bands =
+            calculateBollingerBands(
+                rawData
+            );
+
+        bbUpperSeries =
+            createLineSeries();
+
+        bbMiddleSeries =
+            createLineSeries();
+
+        bbLowerSeries =
+            createLineSeries();
+
+        bbUpperSeries.applyOptions({
+            color: "#f44336"
+        });
+
+        bbMiddleSeries.applyOptions({
+            color: "#ffffff"
+        });
+
+        bbLowerSeries.applyOptions({
+            color: "#f44336"
+        });
+
+        bbUpperSeries.setData(
+            bands.upper
+        );
+
+        bbMiddleSeries.setData(
+            bands.middle
+        );
+
+        bbLowerSeries.setData(
+            bands.lower
+        );
+
+        setIndicatorButton(
+            "bbButton",
+            true
+        );
+
+    } else {
+
+        bbUpperSeries =
+            removeSeries(
+                bbUpperSeries
+            );
+
+        bbMiddleSeries =
+            removeSeries(
+                bbMiddleSeries
+            );
+
+        bbLowerSeries =
+            removeSeries(
+                bbLowerSeries
+            );
+
+        setIndicatorButton(
+            "bbButton",
+            false
+        );
+
+    }
+
+}
+
+
+function generateSignal() {
+
+    if (rawData.length < 50) {
+
+        signalElement.textContent =
+            "NEUTRAL";
+
+        signalElement.className =
+            "signal neutral";
+
+        signalInfo.textContent =
+            "Not enough data for signal calculation.";
+
+        return;
+
+    }
+
+    const ema20 =
+        calculateEMA(
+            rawData,
+            20
+        );
+
+    const ema50 =
+        calculateEMA(
+            rawData,
+            50
+        );
+
+    const latest =
+        rawData[
+            rawData.length - 1
+        ];
+
+    const latestEMA20 =
+        ema20[
+            ema20.length - 1
+        ].value;
+
+    const latestEMA50 =
+        ema50[
+            ema50.length - 1
+        ].value;
+
+    let score = 0;
+
+    if (
+        latest.close >
+        latestEMA20
+    ) {
+
+        score++;
+
+    }
+
+    if (
+        latestEMA20 >
+        latestEMA50
+    ) {
+
+        score++;
+
+    }
+
+    if (
+        latest.close >
+        latest.open
+    ) {
+
+        score++;
+
+    }
+
+    if (score >= 3) {
+
+        signalElement.textContent =
+            "BUY";
+
+        signalElement.className =
+            "signal buy";
+
+        signalInfo.innerHTML =
+            "EMA20 above EMA50<br>" +
+            "Price above EMA20<br>" +
+            "Positive latest candle";
+
+    } else if (score === 0) {
+
+        signalElement.textContent =
+            "SELL";
+
+        signalElement.className =
+            "signal sell";
+
+        signalInfo.innerHTML =
+            "EMA20 below EMA50<br>" +
+            "Price below EMA20<br>" +
+            "Negative latest candle";
+
+    } else {
+
+        signalElement.textContent =
+            "NEUTRAL";
+
+        signalElement.className =
+            "signal neutral";
+
+        signalInfo.innerHTML =
+            "Mixed indicator conditions<br>" +
+            "Wait for confirmation";
+
+    }
+
+}
+
+
+async function loadCandles(
+    symbol,
+    interval
+) {
+
+    statusElement.textContent =
+        "Loading market data...";
+
+    stockName.textContent =
+        symbol;
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/candles/" +
+                encodeURIComponent(symbol) +
+                "?interval=" +
+                encodeURIComponent(interval)
+            );
+
+        if (!response.ok) {
+
+            const error =
+                await response
+                    .json()
+                    .catch(
+                        () => ({})
+                    );
+
+            throw new Error(
+                error.detail ||
+                "Unable to fetch market data"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        rawData = data;
+
+        candleSeries.setData(
+            data
+        );
+
+
+        const volumeData =
+            data.map(
+                candle => ({
+
+                    time: candle.time,
+
+                    value: candle.volume,
+
+                    color:
+                        candle.close >=
+                        candle.open
+                            ? "#26a69a"
+                            : "#ef5350"
+
+                })
+            );
+
+
+        volumeSeries.setData(
+            volumeData
+        );
+
+
+        if (ema20Series) {
+
+            ema20Series.setData(
+                calculateEMA(
+                    data,
+                    20
+                )
+            );
+
+        }
+
+        if (ema50Series) {
+
+            ema50Series.setData(
+                calculateEMA(
+                    data,
+                    50
+                )
+            );
+
+        }
+
+        if (sma20Series) {
+
+            sma20Series.setData(
+                calculateSMA(
+                    data,
+                    20
+                )
+            );
+
+        }
+
+        if (sma50Series) {
+
+            sma50Series.setData(
+                calculateSMA(
+                    data,
+                    50
+                )
+            );
+
+        }
+
+        if (vwapSeries) {
+
+            vwapSeries.setData(
+                calculateVWAP(
+                    data
+                )
+            );
+
+        }
+
+        if (bbUpperSeries) {
+
+            const bands =
+                calculateBollingerBands(
+                    data
+                );
+
+            bbUpperSeries.setData(
+                bands.upper
+            );
+
+            bbMiddleSeries.setData(
+                bands.middle
+            );
+
+            bbLowerSeries.setData(
+                bands.lower
+            );
+
+        }
+
+
+        chart.timeScale()
+            .fitContent();
+
+
+        statusElement.textContent =
+            data.length +
+            " candles • " +
+            interval.toUpperCase();
+
+
+        generateSignal();
+
+    } catch (error) {
+
+        console.error(error);
+
+        statusElement.textContent =
+            "Error: " +
+            error.message;
+
+        rawData = [];
+
+    }
+
+}
+
+
+document
+    .getElementById("ema20Button")
+    .addEventListener(
+        "click",
+        toggleEMA20
+    );
+
+
+document
+    .getElementById("ema50Button")
+    .addEventListener(
+        "click",
+        toggleEMA50
+    );
+
+
+document
+    .getElementById("sma20Button")
+    .addEventListener(
+        "click",
+        toggleSMA20
+    );
+
+
+document
+    .getElementById("sma50Button")
+    .addEventListener(
+        "click",
+        toggleSMA50
+    );
+
+
+document
+    .getElementById("vwapButton")
+    .addEventListener(
+        "click",
+        toggleVWAP
+    );
+
+
+document
+    .getElementById("bbButton")
+    .addEventListener(
+        "click",
+        toggleBollingerBands
+    );
+
+
+document
+    .getElementById("volumeButton")
+    .addEventListener(
+        "click",
+        function () {
+
+            const currentlyVisible =
+                this.textContent === "ON";
+
+            volumeSeries.applyOptions({
+                visible:
+                    !currentlyVisible
+            });
+
+            setIndicatorButton(
+                "volumeButton",
+                !currentlyVisible
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("fitButton")
+    .addEventListener(
+        "click",
+        function () {
+
+            chart.timeScale()
+                .fitContent();
+
+        }
+    );
+
+
+document
+    .querySelectorAll(".timeframe")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .querySelectorAll(
+                            ".timeframe"
+                        )
+                        .forEach(
+                            b =>
+                                b.classList
+                                    .remove(
+                                        "active"
+                                    )
+                        );
+
+                    this.classList.add(
+                        "active"
+                    );
+
+                    loadCandles(
+                        symbolSelector.value,
+                        this.dataset.interval
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+symbolSelector.addEventListener(
+    "change",
+    function () {
+
+        const activeButton =
+            document.querySelector(
+                ".timeframe.active"
+            );
+
+        loadCandles(
+            this.value,
+            activeButton
+                ? activeButton.dataset.interval
+                : "1d"
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "resize",
+    function () {
+
+        chart.applyOptions({
+
+            width:
+                chartContainer.clientWidth,
+
+            height:
+                chartContainer.clientHeight
+
+        });
+
+    }
+);
+
+
+loadCandles(
+    "RELIANCE.NS",
+    "1d"
+);
+
+
+</script>
+
 
 </body>
+
 </html>
